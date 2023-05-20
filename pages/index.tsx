@@ -36,7 +36,7 @@ export default function Home() {
       <div className={landing.section1}>
         <div className={landing.strcontainer}>
           <h1>SyncedTeach</h1>
-          <p>An all in 1 school portal Teachers-Students-Parents</p>
+          <p>An all-in-one school portal teachers, students, and parents.</p>
           <br></br>
           <p>Get started</p>
           <div className={landing.btncontainer}></div>
