@@ -52,3 +52,15 @@ button {
 	color: var(--color-text-light);
 	font-size: var(--font-size-medium);
 }
+
+.text--size-small {
+	font-size: var(--font-size-small);
+}
+
+.text--size-medium {
+	font-size: var(--font-size-medium);
+}
+
+.text--link {
+	color: var(--color-text-link);
+}
