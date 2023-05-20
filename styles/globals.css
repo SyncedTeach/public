@@ -1,12 +1,54 @@
-body{
-    background-color: #222222;
-    color: #fff;
-    margin:0;
-    padding:0;
+:root {
+	/* COLORS */
+	--color-positive: #39d353;
+	--color-negative: #ec3535;
+	--color-dangerous: #af1b25;
+	--color-text-light: #ffffff;
+	--color-text-dark: #000000;
+	--color-text-link: #3658f1;
 
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 20px;
-    margin:0;
-    padding:0;
+	/* FONT SIZES */
+	--font-size-small: 12px;
+	--font-size-medium: 16px;
+	--font-size-large: 20px;
+	--font-size-huge: 32px;
+
+	/* BORDERS */
+	--border-width: 2px;
+	--border-radius: 8px;
 }
-  
+
+body {
+	background-color: #222222;
+	color: #fff;
+	margin: 0;
+	padding: 0;
+
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	font-size: 20px;
+	margin: 0;
+	padding: 0;
+}
+
+button {
+	border: var(--border-width);
+	border-radius: var(--border-radius);
+}
+
+.button--positive {
+	background-color: var(--color-positive);
+	color: var(--color-text-light);
+	font-size: var(--font-size-medium);
+}
+
+.button--negative {
+	background-color: var(--color-negative);
+	color: var(--color-text-light);
+	font-size: var(--font-size-medium);
+}
+
+.button--dangerous {
+	background-color: var(--color-dangerous);
+	color: var(--color-text-light);
+	font-size: var(--font-size-medium);
+}
