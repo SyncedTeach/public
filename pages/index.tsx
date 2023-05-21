@@ -2,7 +2,7 @@ import Head from "next/head";
 import Image from "next/image";
 import * as React from "react";
 import Button from "@mui/material/Button";
-import landing from "@/styles/landing.module.css";
+import styles from "@/styles/landing.module.css";
 import LandingUserOptions from "@/components/LandingUserOptions";
 import "@/styles/globals.css";
 
@@ -35,13 +35,13 @@ export default function Home() {
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
 
-      <div className={landing.section1}>
-        <div className={landing.strcontainer}>
+      <div className={styles.section1}>
+        <div className={styles.strcontainer}>
           <h1>SyncedTeach</h1>
           <p>An all-in-one school portal teachers, students, and parents.</p>
           <br></br>
           <p>Get started</p>
-          <div className={landing.btncontainer}></div>
+          <div className={styles.btncontainer}></div>
         <LandingUserOptions userOptions={userOptions} />
         <br></br>
         <div style={{"padding":"4px"}}className="text--size-medium">

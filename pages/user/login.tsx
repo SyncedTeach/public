@@ -1,6 +1,8 @@
 import { FormEvent,useState, useEffect } from "react"
 import { useRouter } from "next/router"
 import Image from 'next/image'
+import styles from "@/styles/login.module.css";
+import "@/styles/globals.css";
 
 const LoginPage = () => {
 
@@ -44,30 +46,33 @@ const LoginPage = () => {
 
     return (
       <div>
-      <Image
-              src="/syncedteach.png"
-              alt="SyncedTeach logo"
-              width={100}
-              height={24}
-              priority
-            />
-      <br>
-      </br>
-      Official
-      <br>
-      </br>
-      <form onSubmit={handleLogin} method="POST">
-        <label htmlFor="username" className="">Username</label>
-        <br></br>
-        <input type="text" id="username" name="username" onChange={event => setUsername(event.target.value)}></input>
-        <br></br>
-        <label htmlFor="password" className="">Password</label>
-        <br></br>
-        <input type="password" id="password" name="password" onChange={event => setPassword(event.target.value)}></input>
-        <br></br>
-        <br></br>
-        <button className="button--positive">Login</button>
-      </form>
+        <div style={{"marginTop":"16px"}} className={`${styles["login-page"]} ${"border--rounded"} ${"margin--standard"}`}>
+        <Image
+                src="/syncedteach.png"
+                alt="SyncedTeach logo"
+                width={100}
+                height={24}
+                priority
+              />
+        <br>
+        </br>
+        Official
+        <br>
+        </br>
+        <form className={`${"width--very-wide"} ${"margin--auto"}`} onSubmit={handleLogin} method="POST">
+          <label htmlFor="username">Username</label>
+          <br></br>
+          <input type="text" id="username" name="username"  className={`${"width--full"}`} onChange={event => setUsername(event.target.value)}></input>
+          <br></br>
+          <label htmlFor="password">Password</label>
+          <br></br>
+          <input type="password" id="password" name="password" className={`${"width--full"}`} onChange={event => setPassword(event.target.value)}></input>
+          <br></br>
+          <br></br>
+          <button className={`${"button--positive"} ${"width--very-wide"} ${"margin--standard"}`}><span className={`${"text--size-large"}`}>Login</span></button>
+          <br></br>
+        </form>
+      </div>
     </div>
     )
 }

@@ -7,6 +7,8 @@
 	--color-text-dark: #000000;
 	--color-text-link: #3658f1;
 
+	--color-border: #aaaaaa;
+
 	/* FONT SIZES */
 	--font-size-small: 12px;
 	--font-size-medium: 16px;
@@ -16,10 +18,13 @@
 	/* BORDERS */
 	--border-width: 2px;
 	--border-radius: 8px;
+
+	/* MARGINS */
+	--margin-standard: 4px;
 }
 
 body {
-	background-color: #222222;
+	background-color: #1b1b1b;
 	color: #fff;
 	margin: 0;
 	padding: 0;
@@ -61,6 +66,36 @@ button {
 	font-size: var(--font-size-medium);
 }
 
+.text--size-large {
+	font-size: var(--font-size-large);
+}
+
 .text--link {
 	color: var(--color-text-link);
+}
+
+.border--solid {
+	border: var(--border-width) solid var(--color-border);
+}
+
+.border--rounded {
+	border: var(--border-width) solid var(--color-border);
+	border-radius: var(--border-radius);
+}
+
+.margin--standard {
+	margin: var(--margin-standard);
+}
+
+.margin--auto {
+	margin: auto;
+}
+
+/* widths */
+.width--full {
+	width: 100%;
+}
+
+.width--very-wide {
+	width: 90%;
 }
