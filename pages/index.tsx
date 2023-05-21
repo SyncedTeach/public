@@ -44,7 +44,8 @@ export default function Home() {
           <div className={styles.btncontainer}></div>
         <LandingUserOptions userOptions={userOptions} />
         <br></br>
-        <div style={{"padding":"4px"}}className="text--size-medium">
+        <footer>
+                  <div style={{"padding":"4px"}}className="text--size-medium">
           Made by <a href="https://mistertfy64.com"><Image src="/static/images/mistertfy64.png" alt="mistertfy64" width="121" height="20" style={{"top":"5px","position":"relative"}}></Image></a> and <a className="text--link" href="https://github.com/EpicCatto">EpicCatto</a>
         </div>
         <div className="text--size-small">
@@ -52,6 +53,8 @@ export default function Home() {
           <br></br>
           Made as a project for a software competition, but free for anyone to use commercially.
         </div>
+        </footer>
+
         </div>
       </div>
     </>

@@ -1,4 +1,48 @@
+
+
 .login-page {
-	margin: auto;
-	width: max(25%, 400px);
+	width: 100%;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+
+	background-image: linear-gradient(
+		180deg,
+		rgba(68, 0, 62, 0.9),
+		rgba(0, 22, 45, 0.9)
+	);
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-size: cover;
+	background-position: center;
+}
+
+.login-page .logincontainer {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	flex-direction: column;
+
+	margin: 10px;
+	padding: 10px;
+	animation: fadein 2s forwards;
+	
+	background-color:#222222;
+	border-radius: 10px;
+	color: white;
+
+	box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+	
+}
+
+@keyframes fadein {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
 }
