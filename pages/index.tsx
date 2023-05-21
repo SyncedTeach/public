@@ -46,7 +46,7 @@ export default function Home() {
         <br></br>
         <footer>
                   <div style={{"padding":"4px"}}className="text--size-medium">
-          Made by <a href="https://mistertfy64.com"><Image src="/static/images/mistertfy64.png" alt="mistertfy64" width="121" height="20" style={{"top":"5px","position":"relative"}}></Image></a> and <a className="text--link" href="https://github.com/EpicCatto">EpicCatto</a>
+          Made by <a href="https://mistertfy64.com"><Image src="/static/images/mistertfy64.png" alt="mistertfy64" width="121" height="20" style={{"top":"5px","position":"relative"}}></Image></a> and <a className="text--link" href="https://phatlor.me">EpicCatto</a>
         </div>
         <div className="text--size-small">
           <a className="text--link" href="https://github.com/SyncedTeach/public">Frontend Repository</a> • <a className="text--link" href="https://github.com/SyncedTeach/api">API Repository</a> • <a className="text--link" href="https://github.com/SyncedTeach/core">Installation Instructions</a>
