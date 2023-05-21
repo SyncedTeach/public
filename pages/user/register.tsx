@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import styles from "@/styles/login.module.css";
 import "@/styles/globals.css";
-import { Alert, Button, Input, TextField } from "@mui/material";
+import { Alert, Button, Input, InputLabel, TextField } from "@mui/material";
 import Link from "next/link";
 
 const LoginPage = () => {
@@ -11,43 +11,53 @@ const LoginPage = () => {
 
   const [error, setError] = useState("");
   const [status, setStatus] = useState("");
+
   const [username, setUsername] = useState<string | null>(null);
   const [password, setPassword] = useState<string | null>(null);
+  const [confirm_password, setConfirmPassword] = useState<string | null>(null);
+  const [personal_email, setPersonalEmail] = useState<string | null>(null);
+
+  const [confirm_password_error, setConfirmPasswordError] = useState<boolean>(false);
+  const [confirm_mail_error, setConfirmMailError] = useState<boolean>(false);
 
   const authenticate = async (credentials: {
     [key: string]: string | null;
   }) => {
-    return fetch(`${process.env.NEXT_PUBLIC_API_ROUTE}/v1/login`, {
+    return fetch(`${process.env.NEXT_PUBLIC_API_ROUTE}/v1/register`, {
       method: "POST",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(credentials),
-    })
-      .then((data) => data.json())
+    }).then((data) => data.json());
   };
 
   const handleLogin = async (event: FormEvent) => {
     event.preventDefault();
+    if (username === null || username.length < 3 || username.length > 20) {
+      setError("Username must be between 3 and 20 characters");
+      return;
+    }
+    if (password === null || password.length < 8 || password.length > 20) {
+      setError("Password must be between 8 and 20 characters");
+      return;
+    }
 
-    const response = authenticate({ username, password });
-    // .then((data) => {
-    //   if (data.success === true) {
-    //     setError("");
-    //     setStatus("Success! Redirecting...");
-    //     setTimeout(() => {
-    //       router.push("/dashboard");
-    //     }, 1000);
-    //   } else {
-    //     setError(data.message);
-    //   }
-    // })
-    // .catch((error) => {
-    //   console.log(error);
-    //   setError("An error occurred");
-    // });
+    if (personal_email === null || !personal_email.includes("@")) {
+      setConfirmMailError(true);
+      setError("Please enter a valid email");
+      return;
+    }
+    setConfirmMailError(false);
+    if (password !== confirm_password) {
+      setConfirmPasswordError(true);
+      setError("Passwords do not match");
+      return;
+    }
+    setConfirmPasswordError(false);
 
+    const response = authenticate({ username, password, personal_email });
     response.then((data) => {
       if (data.success === true) {
         setError("");
@@ -58,13 +68,7 @@ const LoginPage = () => {
       } else {
         setError(data.message);
       }
-    }
-    ).catch((error) => {
-      console.log(error);
-      setError("An error occurred");
-    }
-    )
-      
+    });
   };
   useEffect(() => {
     // check if user is logged in
@@ -75,35 +79,6 @@ const LoginPage = () => {
   }, []);
 
   return (
-    //   <div>
-    //     <div style={{"marginTop":"16px"}} className={`${styles["login-page"]} ${"border--rounded"} ${"margin--standard"}`}>
-    //     <Image
-    //             src="/syncedteach.png"
-    //             alt="SyncedTeach logo"
-    //             width={100}
-    //             height={24}
-    //             priority
-    //           />
-    //     <br>
-    //     </br>
-    //     Official
-    //     <br>
-    //     </br>
-    //     <form className={`${"width--very-wide"} ${"margin--auto"}`} onSubmit={handleLogin} method="POST">
-    //       <label htmlFor="username">Username</label>
-    //       <br></br>
-    //       <input type="text" id="username" name="username"  className={`${"width--full"}`} onChange={event => setUsername(event.target.value)}></input>
-    //       <br></br>
-    //       <label htmlFor="password">Password</label>
-    //       <br></br>
-    //       <input type="password" id="password" name="password" className={`${"width--full"}`} onChange={event => setPassword(event.target.value)}></input>
-    //       <br></br>
-    //       <br></br>
-    //       <button className={`${"button--positive"} ${"width--very-wide"} ${"margin--standard"}`}><span className={`${"text--size-large"}`}>Login</span></button>
-    //       <br></br>
-    //     </form>
-    //   </div>
-    // </div>
     <div className={styles["login-page"]}>
       <form onSubmit={handleLogin} method="POST">
         <div className={styles.logincontainer}>
@@ -115,7 +90,7 @@ const LoginPage = () => {
             priority
             style={{ margin: "10px", borderRadius: "10px" }}
           />
-          <label style={{ fontSize: "20px" }}>Login</label>
+          <label style={{ fontSize: "20px" }}>Register</label>
           {error !== "" ? (
             <Alert severity="error" style={{ margin: "10px" }}>
               {error}
@@ -131,6 +106,9 @@ const LoginPage = () => {
           ) : (
             <></>
           )}
+          <br></br>
+          <InputLabel htmlFor="my-input" style={{color: "white"}}>Username</InputLabel>
+
           <Input
             placeholder="Username"
             inputProps={{ "aria-label": "description" }}
@@ -143,6 +121,22 @@ const LoginPage = () => {
               borderRadius: "15px",
             }}
           />
+
+        <InputLabel htmlFor="my-input" style={confirm_mail_error ? {color: "red"} : {color: "white"}}>Personal Email</InputLabel>
+          <Input
+            placeholder="Personal Email"
+            error={confirm_mail_error}
+            inputProps={{ "aria-label": "description" }}
+            onChange={(event) => setPersonalEmail(event.target.value)}
+            style={{
+              color: "white",
+              margin: "10px",
+              boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.55)",
+              padding: "10px",
+              borderRadius: "15px",
+            }}
+          />
+          <InputLabel htmlFor="my-input" style={{color: "white"}}>Password</InputLabel>
 
           <Input
             placeholder="Password"
@@ -158,15 +152,32 @@ const LoginPage = () => {
               borderRadius: "15px",
             }}
           />
+          <InputLabel htmlFor="my-input" style={confirm_password_error ? {color: "red"} : {color: "white"}}>Confirm Password</InputLabel>
+
+          <Input
+            placeholder="Confirm Password"
+            inputProps={{ "aria-label": "description" }}
+            onChange={(event) => setConfirmPassword(event.target.value)}
+            type="password"
+            autoComplete="current-password"
+            error={confirm_password_error}
+            style={{
+              color: "white",
+              margin: "10px",
+              boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.55)",
+              padding: "10px",
+              borderRadius: "15px",
+            }}
+          />
 
           <Button variant="contained" type="submit" style={{ margin: "10px" }}>
-            Login
+            Register
           </Button>
 
           <br></br>
 
-          <Link href="/user/register" style={{ color: "#c5c5c5 " }}>
-            Don&apos;t have an account? Register here
+          <Link href="/user/login" style={{ color: "#c5c5c5 " }}>
+            Already have an account? Login here.
           </Link>
         </div>
       </form>
