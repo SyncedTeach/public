@@ -22,12 +22,13 @@ const LoginPage = () => {
     const authenticate = async (credentials: {[key:string]:string|null}) => {
       return fetch(`${process.env.NEXT_PUBLIC_API_ROUTE}/v1/login`, {
       method: 'POST',
+      credentials: "include",
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(credentials)
       })
-      .then(data => data.json())
+      .then(data => console.log(data))
     } 
   
     const handleLogin = async (event: FormEvent) => {
