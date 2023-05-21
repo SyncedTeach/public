@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import styles from "@/styles/login.module.css";
 import "@/styles/globals.css";
-import { Alert, Button, Input, TextField } from "@mui/material";
+import { Alert, Button, Input, InputLabel, TextField } from "@mui/material";
 import Link from "next/link";
 
 const LoginPage = () => {
@@ -131,8 +131,16 @@ const LoginPage = () => {
           ) : (
             <></>
           )}
+
+          <br></br>
+
+          <InputLabel htmlFor="my-input" style={{ color: "white" }}>
+          Email or Username
+          </InputLabel>
+
+
           <Input
-            placeholder="Username"
+            placeholder="Email or Username"
             inputProps={{ "aria-label": "description" }}
             onChange={(event) => setUsername(event.target.value)}
             style={{
@@ -143,6 +151,10 @@ const LoginPage = () => {
               borderRadius: "15px",
             }}
           />
+
+          <InputLabel htmlFor="my-input" style={{ color: "white" }}>
+            Password
+          </InputLabel>
 
           <Input
             placeholder="Password"
