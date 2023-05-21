@@ -4,6 +4,7 @@ import Image from "next/image";
 import styles from "@/styles/login.module.css";
 import "@/styles/globals.css";
 import { Alert, Button, Input, TextField } from "@mui/material";
+import Link from "next/link";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -164,9 +165,9 @@ const LoginPage = () => {
 
           <br></br>
 
-          <a href="/user/register" style={{ color: "#c5c5c5 " }}>
-            Don't have an account? Register here
-          </a>
+          <Link href="/user/register" style={{ color: "#c5c5c5 " }}>
+            Don&apos;t have an account? Register here
+          </Link>
         </div>
       </form>
     </div>
