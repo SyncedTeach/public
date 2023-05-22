@@ -10,14 +10,14 @@ export default function App({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     // Check if API is up
-    if (router.pathname === "/error" || router.pathname === "/404") return;
+    if (router.pathname === "/error" || router.pathname === "/404" || router.pathname ==="/setup") return;
 
 
 
     const runCheck = async () => {
       fetch('/api/checkconfig');
       console.log(settings)
-      if (settings !== undefined && settings.setup === false) {
+      if (settings !== undefined && settings.setup === true) {
         return router.push("/error?cause=not-setup");
       }
       try {
