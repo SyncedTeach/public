@@ -1,12 +1,10 @@
 import Head from "next/head";
-import Image from "next/image";
 import * as React from "react";
-import Button from "@mui/material/Button";
 import styles from "@/styles/landing.module.css";
-import LandingUserOptions from "@/components/LandingUserOptions";
 import "@/styles/globals.css";
+import { LinearProgress, Link } from "@mui/material";
 
-export default function Dashboard() {
+export default function Custom404() {
   return (
     <>
       <Head>
@@ -17,7 +15,7 @@ export default function Dashboard() {
         <div className={styles.section1}>
             <div className={styles.strcontainer}>
                 <h1>SyncedTeach</h1>
-                <>Thank you for registering this portal. this is still a work in progress, so please be patient.</>
+                <p>404 - The page you're looking for does not exist. <Link href="/">Go back home</Link></p>
                 </div>
             </div>
 
