@@ -15,7 +15,7 @@ export default function Custom404() {
         <div className={styles.section1}>
             <div className={styles.strcontainer}>
                 <h1>SyncedTeach</h1>
-                <p>404 - The page you're looking for does not exist. <Link href="/">Go back home</Link></p>
+                <p>404 - The page you&apos;re looking for does&apos;t exist. <Link href="/">Go back home</Link></p>
                 </div>
             </div>
 

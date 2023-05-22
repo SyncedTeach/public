@@ -15,7 +15,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
 
     const runCheck = async () => {
-      fetch('/api/checkconfig')
+      fetch('/api/checkconfig');
       console.log(settings)
       if (settings !== undefined && settings.setup === false) {
         return router.push("/error?cause=not-setup");
