@@ -16,7 +16,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
     const runCheck = async () => {
       fetch('/api/checkconfig');
-      console.log(settings)
+      // console.log(settings)
       if (settings !== undefined && settings.setup === true) {
         return router.push("/error?cause=not-setup");
       }
@@ -27,9 +27,9 @@ export default function App({ Component, pageProps }: AppProps) {
         const data = await response.json();
         
         if (data.success === true) {
-          console.log("API is up");
+          // console.log("API is up");
         } else if (data.success === false && data.error === "Database not available") {
-          console.log("Database is down");
+          // console.log("Database is down");
           router.push("/error?cause=database");
         }
       } catch (error) {

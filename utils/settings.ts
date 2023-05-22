@@ -14,7 +14,7 @@ try {
     settings.config = require('../config/config.json');
     // if env exists, use it
     settings.config.api_route = process.env.NEXT_PUBLIC_API_ROUTE !== undefined ? process.env.NEXT_PUBLIC_API_ROUTE : settings.config.api_route;
-    console.log(settings.config.api_route);
+    // console.log(settings.config.api_route);
     settings.success = true;
     settings.message = 'Config file loaded';
     if(settings.config.api_route === '') {
