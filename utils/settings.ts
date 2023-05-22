@@ -11,12 +11,12 @@ let settings = {
 
 try {
     // check if file exists
-    
-
     settings.config = require('../config/config.json');
     settings.success = true;
     settings.message = 'Config file loaded';
-    settings.setup = true;
+    if(settings.config.api_route !== '') {
+        settings.setup = true;
+    }
 } catch (err) {
     settings.message = 'an error occured while loading config file ' + err;
     settings.setup = false;
