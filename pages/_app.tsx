@@ -4,10 +4,18 @@ import type { AppProps } from "next/app";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import settings from "@/utils/settings";
+import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
+  const darkTheme = createTheme({
+    palette: {
+      mode: 'dark',
+    },
+  });
+  
+  
   useEffect(() => {
     // Check if API is up
     if (router.pathname === "/error" || router.pathname === "/404" || router.pathname ==="/setup") return;
@@ -39,7 +47,13 @@ export default function App({ Component, pageProps }: AppProps) {
     };
 
     runCheck();
+    
   }, []);
 
-  return <Component {...pageProps} />;
+  return (
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
+      <Component {...pageProps} />
+    </ThemeProvider>
+  );
 }

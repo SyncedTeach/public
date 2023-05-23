@@ -40,11 +40,31 @@ export default function Custom404() {
         setPage(page + 1);
       }, 1500);
     }else{
-      console.log(page);
+      // console.log(page);
       setTitle(titleList[page-1]);
       setDescription(descriptionList[page-1]);
     }
   }, [page]);
+
+
+  const validateApiRoute = (apiRoute:string) => {
+    // Define the regular expression pattern for the expected API route format
+    const apiRoutePattern = /^\/v1\/[a-z0-9\-\/]+$/i;
+  
+    // Test the apiRoute against the pattern
+    return apiRoutePattern.test(apiRoute);
+  };
+
+  const handleChange = (event:any) => {
+    const inputValue = event.target.value;
+
+    if (!validateApiRoute(inputValue)) {
+      setError("Invalid API Route");
+    } else {
+      setError("");
+      setApiRoute(inputValue);
+    }
+  };
 
   const handleP2Next = async () => {
     try {
@@ -87,7 +107,10 @@ export default function Custom404() {
           padding: "10px",
           borderRadius: "15px",
         }}
-        onChange={(event) => {setApiRoute(event.target.value)}}
+        onChange={(event) => {
+        
+          handleChange(event.target.value)
+        }}
       />
       <br />
       
