@@ -66,7 +66,7 @@ const LoginPage = () => {
         setError("");
         setStatus("Success! Redirecting...");
         setTimeout(() => {
-          router.push("/dashboard");
+          router.push("/login");
         }, 1000);
       } else {
         setError(data.message);

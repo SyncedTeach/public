@@ -67,11 +67,7 @@ const LoginPage = () => {
       });
   };
   useEffect(() => {
-    // check if user is logged in
-    // if logged in redirect to home page
-    // if not logged in, do nothing
 
-    localStorage.setItem("user", JSON.stringify({ name: "John Doe" }));
   }, []);
 
   return (
