@@ -21,13 +21,13 @@ export default function Dashboard() {
           // return router.push("/user/login");
           return router.push("/user/login");
         }
-        if(res.data.user_type == "teacher"){
+        if(res.data.membership.isTeacher == true){
           return router.push("/dashboard/teacher");
         }
-        if(res.data.user_type == "student"){
+        if(res.data.membership.isStudent == true){
           return router.push("/dashboard/student");
         }
-        if(res.data.user_type == "parent"){
+        if(res.data.membership.isParent == true){
           return router.push("/dashboard/parent");
         }
       });
