@@ -1,7 +1,7 @@
 .section1 {
 	width: 100%;
 	/* make it fits all the eliment inside */
-	height: calc(100vh - 40px);
+	height: calc(100vh);
 	display: flex;
 	justify-content: center;
 	align-items: center;

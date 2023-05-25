@@ -1,6 +1,5 @@
 import Head from "next/head";
 import Image from "next/image";
-import * as React from "react";
 import Button from "@mui/material/Button";
 import styles from "@/styles/landing.module.css";
 import LandingUserOptions from "@/components/LandingUserOptions";
@@ -10,13 +9,23 @@ import {
   BottomNavigationAction,
   Grid,
   Paper,
+  Backdrop,
+  Input,
+  Card,
 } from "@mui/material";
 import Icon from "@mui/material/Icon";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import settings from "@/utils/settings";
 
 export default function Dashboard() {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
   const router = useRouter();
+
+  const [data, setData] = useState<any>({
+    username: "",
+  });
+
   const classes = [
     {
       name: "Class P.2/1",
@@ -31,11 +40,33 @@ export default function Dashboard() {
       id: "3",
     },
   ];
+  useEffect(() => {
+    router.push(`/dashboard/teacher?page=${value}`);
+  }, [value]);
+
+  useEffect(() => {
+    if (router.query.page) {
+      setValue(parseInt(router.query.page as string));
+    }
+    fetch(settings.config.api_route + "/v1/user", {
+      method: "POST",
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.success !== true) {
+          // return router.push("/user/login");
+          return console.log("error " + res.data);
+        }
+        setData(res.data);
+        console.log(res.data);
+      });
+  }, []);
 
   const homePage = (
     <div className={styles.section1}>
       <div className={styles.strcontainer}>
-        <h2>Welcome namehere, this is your teacher panel</h2>
+        <h2>Welcome {data.username}, this is your teacher panel</h2>
         <br></br>
         <Grid container spacing={2} justifyContent="center">
           <Grid item xs={12} sm={6}>
@@ -53,9 +84,10 @@ export default function Dashboard() {
               <p style={{ color: "#42ba96", fontSize: "20px" }}>You have</p>
               <p>class-students-size Students</p>
               <br />
-              <p style={{ color: "#FFD700", fontSize: "20px" }}>You&apos;re teaching</p>
+              <p style={{ color: "#FFD700", fontSize: "20px" }}>
+                You&apos;re teaching
+              </p>
               <p>class-classroom-size Classrooms</p>
-              
             </Paper>
           </Grid>
         </Grid>
@@ -68,34 +100,59 @@ export default function Dashboard() {
       <div className={styles.strcontainer}>
         {/* listing classes */}
         <h2>Classes</h2>
-        <br></br>
-        <div>
-        <Grid container spacing={2} direction='column' justifyContent="center" >
-          {classes.map((item) => (
-            <Grid item xs={12} sm={6} key={item.id}>
-              <Paper
-              onClick={() => router.push(`/dashboard/teacher/class?id=${item.id}`)}
-                sx={{
-                  p: 2,
-                  margin: "auto",
-                  maxWidth: 500,
-                  flexGrow: 1,
-                  backgroundColor: "#1A2027",
-                  cursor: "pointer",
-                }}
-              >
-                <h3 style={{ color: "white" }}>{item.name}</h3>
-                <p>{item.id}</p>
-              </Paper>
-            </Grid>
-          ))}
-        </Grid>
+        <Card
+          sx={{
+            p: 2,
+            margin: "20px",
+            maxWidth: 500,
+            maxHeight: 200,
+            flexGrow: 1,
+            backgroundColor: "#1A2027",
+          }}
+        >
+          <p>Join class manually</p>
+          <Input
+            placeholder="Class Code"
+            style={{ color: "white", backgroundColor: "#2A2F36", marginBottom: "10px"}}
+          />
+          <br/>
+          <Button variant="contained" style={{ backgroundColor: "#42ba96" }}>
+            Join Class
+          </Button>
+        </Card>
 
+        <div>
+          <Grid
+            container
+            spacing={2}
+            direction="column"
+            justifyContent="center"
+          >
+            {classes.map((item) => (
+              <Grid item xs={12} sm={6} key={item.id}>
+                <Paper
+                  onClick={() =>
+                    router.push(`/dashboard/teacher/class?id=${item.id}`)
+                  }
+                  sx={{
+                    p: 2,
+                    margin: "auto",
+                    maxWidth: 500,
+                    flexGrow: 1,
+                    backgroundColor: "#1A2027",
+                    cursor: "pointer",
+                  }}
+                >
+                  <h3 style={{ color: "white" }}>{item.name}</h3>
+                  <p>{item.id}</p>
+                </Paper>
+              </Grid>
+            ))}
+          </Grid>
         </div>
       </div>
     </div>
   );
-
 
   const currentPage = () => {
     switch (value) {

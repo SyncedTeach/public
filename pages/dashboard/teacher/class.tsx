@@ -165,7 +165,7 @@ export default function Dashboard() {
         //   console.log(newValue);
           setValue(newValue);
           if (newValue === 0) {
-            router.push("/dashboard/teacher");
+            router.push("/dashboard/teacher?page=1");
           }
         }}
       >
