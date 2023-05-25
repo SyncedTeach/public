@@ -5,6 +5,8 @@ import styles from "@/styles/login.module.css";
 import "@/styles/globals.css";
 import { Alert, Button, Input, InputLabel, TextField } from "@mui/material";
 import Link from "next/link";
+import Head from "next/head";
+import settings from "@/utils/settings";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -17,13 +19,14 @@ const LoginPage = () => {
   const [confirm_password, setConfirmPassword] = useState<string | null>(null);
   const [personal_email, setPersonalEmail] = useState<string | null>(null);
 
-  const [confirm_password_error, setConfirmPasswordError] = useState<boolean>(false);
+  const [confirm_password_error, setConfirmPasswordError] =
+    useState<boolean>(false);
   const [confirm_mail_error, setConfirmMailError] = useState<boolean>(false);
 
   const authenticate = async (credentials: {
     [key: string]: string | null;
   }) => {
-    return fetch(`${process.env.NEXT_PUBLIC_API_ROUTE}/v1/register`, {
+    return fetch(`${settings.config.api_route}/v1/register`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -63,7 +66,7 @@ const LoginPage = () => {
         setError("");
         setStatus("Success! Redirecting...");
         setTimeout(() => {
-          router.push("/dashboard");
+          router.push("/login");
         }, 1000);
       } else {
         setError(data.message);
@@ -79,109 +82,134 @@ const LoginPage = () => {
   }, []);
 
   return (
-    <div className={styles["login-page"]}>
-      <form onSubmit={handleLogin} method="POST">
-        <div className={styles.logincontainer}>
-          <Image
-            src="/favicon.ico"
-            alt="SyncedTeach logo"
-            width={64}
-            height={64}
-            priority
-            style={{ margin: "10px", borderRadius: "10px" }}
-          />
-          <label style={{ fontSize: "20px" }}>Register</label>
-          {error !== "" ? (
-            <Alert severity="error" style={{ margin: "10px" }}>
-              {error}
-            </Alert>
-          ) : (
-            <></>
-          )}
+    <>
+      <Head>
+        <title>SyncedTeach - Register</title>
+      </Head>
+      <div className={styles["login-page"]}>
+        <form onSubmit={handleLogin} method="POST">
+          <div className={styles.logincontainer}>
+            <Image
+              src="/favicon.ico"
+              alt="SyncedTeach logo"
+              width={64}
+              height={64}
+              priority
+              style={{ margin: "10px", borderRadius: "10px" }}
+            />
+            <label style={{ fontSize: "20px" }}>Register</label>
+            {error !== "" ? (
+              <Alert severity="error" style={{ margin: "10px" }}>
+                {error}
+              </Alert>
+            ) : (
+              <></>
+            )}
 
-          {status !== "" ? (
-            <Alert severity="success" style={{ margin: "10px" }}>
-              {status}
-            </Alert>
-          ) : (
-            <></>
-          )}
-          <br></br>
-          <InputLabel htmlFor="my-input" style={{color: "white"}}>Username</InputLabel>
+            {status !== "" ? (
+              <Alert severity="success" style={{ margin: "10px" }}>
+                {status}
+              </Alert>
+            ) : (
+              <></>
+            )}
+            <br></br>
+            <InputLabel htmlFor="my-input" style={{ color: "white" }}>
+              Username
+            </InputLabel>
 
-          <Input
-            placeholder="Username"
-            inputProps={{ "aria-label": "description" }}
-            onChange={(event) => setUsername(event.target.value)}
-            style={{
-              color: "white",
-              margin: "10px",
-              boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.55)",
-              padding: "10px",
-              borderRadius: "15px",
-            }}
-          />
+            <Input
+              placeholder="Username"
+              inputProps={{ "aria-label": "description" }}
+              onChange={(event) => setUsername(event.target.value)}
+              style={{
+                color: "white",
+                margin: "10px",
+                boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.55)",
+                padding: "10px",
+                borderRadius: "15px",
+              }}
+            />
 
-        <InputLabel htmlFor="my-input" style={confirm_mail_error ? {color: "red"} : {color: "white"}}>Personal Email</InputLabel>
-          <Input
-            placeholder="Personal Email"
-            error={confirm_mail_error}
-            inputProps={{ "aria-label": "description" }}
-            onChange={(event) => setPersonalEmail(event.target.value)}
-            style={{
-              color: "white",
-              margin: "10px",
-              boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.55)",
-              padding: "10px",
-              borderRadius: "15px",
-            }}
-          />
-          <InputLabel htmlFor="my-input" style={{color: "white"}}>Password</InputLabel>
+            <InputLabel
+              htmlFor="my-input"
+              style={confirm_mail_error ? { color: "red" } : { color: "white" }}
+            >
+              Personal Email
+            </InputLabel>
+            <Input
+              placeholder="Personal Email"
+              error={confirm_mail_error}
+              inputProps={{ "aria-label": "description" }}
+              onChange={(event) => setPersonalEmail(event.target.value)}
+              style={{
+                color: "white",
+                margin: "10px",
+                boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.55)",
+                padding: "10px",
+                borderRadius: "15px",
+              }}
+            />
+            <InputLabel htmlFor="my-input" style={{ color: "white" }}>
+              Password
+            </InputLabel>
 
-          <Input
-            placeholder="Password"
-            inputProps={{ "aria-label": "description" }}
-            onChange={(event) => setPassword(event.target.value)}
-            type="password"
-            autoComplete="current-password"
-            style={{
-              color: "white",
-              margin: "10px",
-              boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.55)",
-              padding: "10px",
-              borderRadius: "15px",
-            }}
-          />
-          <InputLabel htmlFor="my-input" style={confirm_password_error ? {color: "red"} : {color: "white"}}>Confirm Password</InputLabel>
+            <Input
+              placeholder="Password"
+              inputProps={{ "aria-label": "description" }}
+              onChange={(event) => setPassword(event.target.value)}
+              type="password"
+              autoComplete="current-password"
+              style={{
+                color: "white",
+                margin: "10px",
+                boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.55)",
+                padding: "10px",
+                borderRadius: "15px",
+              }}
+            />
+            <InputLabel
+              htmlFor="my-input"
+              style={
+                confirm_password_error ? { color: "red" } : { color: "white" }
+              }
+            >
+              Confirm Password
+            </InputLabel>
 
-          <Input
-            placeholder="Confirm Password"
-            inputProps={{ "aria-label": "description" }}
-            onChange={(event) => setConfirmPassword(event.target.value)}
-            type="password"
-            autoComplete="current-password"
-            error={confirm_password_error}
-            style={{
-              color: "white",
-              margin: "10px",
-              boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.55)",
-              padding: "10px",
-              borderRadius: "15px",
-            }}
-          />
+            <Input
+              placeholder="Confirm Password"
+              inputProps={{ "aria-label": "description" }}
+              onChange={(event) => setConfirmPassword(event.target.value)}
+              type="password"
+              autoComplete="current-password"
+              error={confirm_password_error}
+              style={{
+                color: "white",
+                margin: "10px",
+                boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.55)",
+                padding: "10px",
+                borderRadius: "15px",
+              }}
+            />
 
-          <Button variant="contained" type="submit" style={{ margin: "10px" }}>
-            Register
-          </Button>
+            <Button
+              variant="contained"
+              type="submit"
+              style={{ margin: "10px" }}
+            >
+              Register
+            </Button>
 
-          <br></br>
+            <br></br>
 
-          <Link href="/user/login" style={{ color: "#c5c5c5 " }}>
-            Already have an account? Login here.
-          </Link>
-        </div>
-      </form>
-    </div>
+            <Link href="/user/login" style={{ color: "#c5c5c5 " }}>
+              Already have an account? Login here.
+            </Link>
+          </div>
+        </form>
+      </div>
+    </>
   );
 };
 
