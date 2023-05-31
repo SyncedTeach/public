@@ -1,54 +1,89 @@
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import Head from "next/head";
-import Image from "next/image";
 import Button from "@mui/material/Button";
 import styles from "@/styles/landing.module.css";
-import LandingUserOptions from "@/components/LandingUserOptions";
-import "@/styles/globals.css";
-import { useEffect } from "react";
 import settings from "@/utils/settings";
-import { useRouter } from "next/router";
+import {
+  LinearProgress,
+  Backdrop
+} from "@mui/material";
 
 export default function Dashboard() {
   const router = useRouter();
+  const [message, setMessage] = useState("Loading...");
+
   useEffect(() => {
-    fetch(settings.config.api_route + "/v1/user", {
-      method: "POST",
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.success !== true) {
-          // return router.push("/user/login");
+    const fetchData = async () => {
+      try {
+        const response = await fetch(settings.config.api_route + "/v1/user", {
+          method: "POST",
+          credentials: "include",
+        });
+        const data = await response.json();
+
+        if (data.success !== true) {
           return router.push("/user/login");
         }
-        if(res.data.membership.isTeacher == true){
-          return router.push("/dashboard/teacher");
+
+        if (!data.data.membership) {
+          setMessage(
+            "Thank you for registering. It seems like you're not in any of our user types (Teacher, Student, Parent). If you think this is an error, you can click the button below and follow the instructions."
+          );
+        } else if (data.data.membership.isTeacher) {
+          setMessage("You are a teacher, redirecting you to the teacher dashboard");
+          router.push("/dashboard/teacher");
+        } else if (data.data.membership.isStudent) {
+          setMessage("You are a student, redirecting you to the student dashboard");
+          router.push("/dashboard/student");
+        } else if (data.data.membership.isParent) {
+          setMessage("You are a parent, redirecting you to the parent dashboard");
+          router.push("/dashboard/parent");
         }
-        if(res.data.membership.isStudent == true){
-          return router.push("/dashboard/student");
-        }
-        if(res.data.membership.isParent == true){
-          return router.push("/dashboard/parent");
-        }
-      });
+      } catch (error) {
+        console.error("Error:", error);
+        // Handle any errors here
+      }
+    };
+
+    fetchData();
   }, []);
-    
+
+  const loading = (
+    <>
+      <div className={styles.section1}>
+        <div className={styles.strcontainer}>
+        <h1>SyncedTeach</h1>
+        <p>Loading...</p>
+      </div>
+      </div>
+      <LinearProgress />
+      <Backdrop open={true}></Backdrop>
+    </>
+  );
+
+
+  const isMessageLoading = message.includes("Loading");
+  const isMessageUserType = message.includes("You are a");
+
   return (
     <>
       <Head>
         <title>SyncedTeach</title>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
-    
-        <div className={styles.section1}>
-            <div className={styles.strcontainer}>
-                <h1>SyncedTeach</h1>
-                <>Thank you for registering. seems like you&apos;re not in any of our user_type (Teacher,Student,Parent) if you think this is an error you can click the button bellow and follow the instruction</>
-                <br></br>
-                <Button variant="contained" onClick={() => router.push("/user/setup")}>Setup Account</Button>
-                </div>
-            </div>
+      {isMessageLoading && loading}
 
+      <div className={styles.section1}>
+        <div className={styles.strcontainer}>
+          <h1>SyncedTeach</h1>
+          <p>{message}</p>
+          <br />
+          <Button variant="contained" onClick={() => router.push("/user/setup")} disabled={isMessageLoading || isMessageUserType}>
+            Setup
+          </Button>
+        </div>
+      </div>
     </>
   );
 }

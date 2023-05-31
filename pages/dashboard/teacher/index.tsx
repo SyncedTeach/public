@@ -12,6 +12,7 @@ import {
   Backdrop,
   Input,
   Card,
+  LinearProgress,
 } from "@mui/material";
 import Icon from "@mui/material/Icon";
 import { useRouter } from "next/router";
@@ -57,6 +58,9 @@ export default function Dashboard() {
         if (res.success !== true) {
           // return router.push("/user/login");
           return console.log("error " + res.data);
+        }
+        if (!res.data.membership || !res.data.membership.isTeacher) {
+          return router.push("/error?cause=not-teacher");
         }
         setData(res.data);
         console.log(res.data);
@@ -113,9 +117,13 @@ export default function Dashboard() {
           <p>Join class manually</p>
           <Input
             placeholder="Class Code"
-            style={{ color: "white", backgroundColor: "#2A2F36", marginBottom: "10px"}}
+            style={{
+              color: "white",
+              backgroundColor: "#2A2F36",
+              marginBottom: "10px",
+            }}
           />
-          <br/>
+          <br />
           <Button variant="contained" style={{ backgroundColor: "#42ba96" }}>
             Join Class
           </Button>
@@ -163,6 +171,19 @@ export default function Dashboard() {
     }
   };
 
+  const loading = (
+    <>
+      <div className={styles.section1}>
+        <div className={styles.strcontainer}>
+        <h1>SyncedTeach</h1>
+        <p>Loading...</p>
+      </div>
+      </div>
+      <LinearProgress />
+      <Backdrop open={true}></Backdrop>
+    </>
+  );
+
   return (
     <>
       <Head>
@@ -173,7 +194,9 @@ export default function Dashboard() {
           href="https://fonts.googleapis.com/icon?family=Material+Icons"
         />
       </Head>
-      {currentPage()}
+      {/* if data is empty show <LinearProgress /> if not current page */}
+      {/* {currentPage()} */}
+      {data.username ? currentPage() : loading}
       <BottomNavigation
         showLabels
         style={{
