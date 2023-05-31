@@ -109,11 +109,13 @@ export default function Dashboard() {
       <div className={styles.strcontainer}>
         {/* listing classes */}
         <h2>Attendence</h2>
+        <br/>
         <Grid container spacing={2} justifyContent="center">
         <Paper
           sx={{
             p: 2,
-            margin: "20px",
+            marginLeft: "35px",
+            marginRight: "20px",
             maxWidth: 600,
             // maxHeight: 200,
             flexGrow: 1,
@@ -157,13 +159,15 @@ export default function Dashboard() {
             <p>student-checkout-time</p>
           </Paper>
         </Paper>
+        <br/>
         {/* Attendence summary */}
         <Paper
           sx={{
             p: 2,
-            margin: "20px",
             maxWidth: 600,
             // maxHeight: 200,
+            marginLeft: "35px",
+            marginRight: "20px",
             flexGrow: 1,
             backgroundColor: "#1A2027",
           }}
