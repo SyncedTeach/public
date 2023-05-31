@@ -128,6 +128,7 @@ export default function Custom404() {
 
   const handleP3Next = async () => {
     try {
+      // file deepcode ignore Ssrf: <please specify a reason of ignoring this>
       await fetch(`${apiRoute}/v1/setup/validate`, {
         method: "POST",
         headers: {

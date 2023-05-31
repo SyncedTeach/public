@@ -12,6 +12,7 @@ import {
   Backdrop,
   Input,
   Card,
+  LinearProgress,
 } from "@mui/material";
 import Icon from "@mui/material/Icon";
 import { useRouter } from "next/router";
@@ -48,19 +49,43 @@ export default function Dashboard() {
     if (router.query.page) {
       setValue(parseInt(router.query.page as string));
     }
-    fetch(settings.config.api_route + "/v1/user", {
-      method: "POST",
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.success !== true) {
-          // return router.push("/user/login");
-          return console.log("error " + res.data);
-        }
-        setData(res.data);
-        console.log(res.data);
-      });
+fetch(settings.config.api_route + "/v1/user", {
+  method: "POST",
+  credentials: "include",
+})
+  .then((res) => res.json())
+  .then((res) => {
+    if (res.success !== true) {
+      console.log("error " + res.data);
+      return Promise.resolve(false); // Return a promise that resolves to false
+    }
+    if (!res.data.membership || !res.data.membership.isTeacher) {
+      router.push("/error?cause=not-teacher");
+      return false; // Return false
+    }
+    setData(res.data);
+    console.log(res.data);
+    return true; // Return true
+  });
+  fetch(settings.config.api_route + "/v1/user", {
+    method: "POST",
+    credentials: "include",
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      if (res.success !== true) {
+        console.log("error " + res.data);
+        return Promise.resolve(false); // Return a promise that resolves to false
+      }
+      if (!res.data.membership || !res.data.membership.isTeacher) {
+        router.push("/error?cause=not-teacher");
+        return false; // Return false
+      }
+      setData(res.data);
+      console.log(res.data);
+      return true; // Return true
+    });
+  
   }, []);
 
   const homePage = (
@@ -113,9 +138,13 @@ export default function Dashboard() {
           <p>Join class manually</p>
           <Input
             placeholder="Class Code"
-            style={{ color: "white", backgroundColor: "#2A2F36", marginBottom: "10px"}}
+            style={{
+              color: "white",
+              backgroundColor: "#2A2F36",
+              marginBottom: "10px",
+            }}
           />
-          <br/>
+          <br />
           <Button variant="contained" style={{ backgroundColor: "#42ba96" }}>
             Join Class
           </Button>
@@ -163,6 +192,19 @@ export default function Dashboard() {
     }
   };
 
+  const loading = (
+    <>
+      <div className={styles.section1}>
+        <div className={styles.strcontainer}>
+        <h1>SyncedTeach</h1>
+        <p>Loading...</p>
+      </div>
+      </div>
+      <LinearProgress />
+      <Backdrop open={true}></Backdrop>
+    </>
+  );
+
   return (
     <>
       <Head>
@@ -173,7 +215,9 @@ export default function Dashboard() {
           href="https://fonts.googleapis.com/icon?family=Material+Icons"
         />
       </Head>
-      {currentPage()}
+      {/* if data is empty show <LinearProgress /> if not current page */}
+      {/* {currentPage()} */}
+      {data.username ? currentPage() : loading}
       <BottomNavigation
         showLabels
         style={{
