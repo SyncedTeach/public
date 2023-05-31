@@ -12,6 +12,7 @@ import {
   Backdrop,
   Input,
   Card,
+  LinearProgress
 } from "@mui/material";
 import Icon from "@mui/material/Icon";
 import { useRouter } from "next/router";
@@ -47,18 +48,21 @@ export default function Dashboard() {
       credentials: "include",
     })
       .then((res) => res.json())
-      .then((res) => {
+      .then((res): boolean | Promise<boolean> => {
         if (res.success !== true) {
-          // return router.push("/user/login");
-          return console.log("error " + res.data);
+          console.log("error " + res.data);
+          return Promise.resolve(false);
         }
-      // validate user role
-      if (!res.data.membership || !res.data.membership.isParent) {
-        return router.push("/error?cause=not-parent");
-      }
+        // Validate user role
+        if (!res.data.membership || !res.data.membership.isParent) {
+          router.push("/error?cause=not-parent");
+          return false;
+        }
         setData(res.data);
         console.log(res.data);
+        return true;
       });
+    
   }, []);
 
   const homePage = (

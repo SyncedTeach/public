@@ -49,22 +49,43 @@ export default function Dashboard() {
     if (router.query.page) {
       setValue(parseInt(router.query.page as string));
     }
-    fetch(settings.config.api_route + "/v1/user", {
-      method: "POST",
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.success !== true) {
-          // return router.push("/user/login");
-          return console.log("error " + res.data);
-        }
-        if (!res.data.membership || !res.data.membership.isTeacher) {
-          return router.push("/error?cause=not-teacher");
-        }
-        setData(res.data);
-        console.log(res.data);
-      });
+fetch(settings.config.api_route + "/v1/user", {
+  method: "POST",
+  credentials: "include",
+})
+  .then((res) => res.json())
+  .then((res) => {
+    if (res.success !== true) {
+      console.log("error " + res.data);
+      return Promise.resolve(false); // Return a promise that resolves to false
+    }
+    if (!res.data.membership || !res.data.membership.isTeacher) {
+      router.push("/error?cause=not-teacher");
+      return false; // Return false
+    }
+    setData(res.data);
+    console.log(res.data);
+    return true; // Return true
+  });
+  fetch(settings.config.api_route + "/v1/user", {
+    method: "POST",
+    credentials: "include",
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      if (res.success !== true) {
+        console.log("error " + res.data);
+        return Promise.resolve(false); // Return a promise that resolves to false
+      }
+      if (!res.data.membership || !res.data.membership.isTeacher) {
+        router.push("/error?cause=not-teacher");
+        return false; // Return false
+      }
+      setData(res.data);
+      console.log(res.data);
+      return true; // Return true
+    });
+  
   }, []);
 
   const homePage = (
