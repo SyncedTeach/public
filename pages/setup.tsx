@@ -109,7 +109,8 @@ export default function Custom404() {
         }}
         onChange={(event) => {
         
-          handleChange(event.target.value)
+          // handleChange(event.target.value)
+          setApiRoute(event.target.value);
         }}
       />
       <br />
