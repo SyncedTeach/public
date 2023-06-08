@@ -17,7 +17,7 @@ export default function Dashboard() {
     const fetchData = async () => {
       try {
         const response = await fetch(settings.config.api_route + "/v1/user", {
-          method: "POST",
+          method: "GET",
           credentials: "include",
         });
         const data = await response.json();

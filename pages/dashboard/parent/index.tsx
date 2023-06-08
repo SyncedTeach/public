@@ -44,7 +44,7 @@ export default function Dashboard() {
       setValue(parseInt(router.query.page as string));
     }
     fetch(settings.config.api_route + "/v1/user", {
-      method: "POST",
+      method: "GET",
       credentials: "include",
     })
       .then((res) => res.json())
