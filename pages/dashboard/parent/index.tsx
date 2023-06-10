@@ -43,7 +43,7 @@ export default function Dashboard() {
     if (router.query.page) {
       setValue(parseInt(router.query.page as string));
     }
-    fetch(settings.config.api_route + "/v1/user/"+localStorage.getItem("user_id"), {
+    fetch(settings.config.api_route + "/v1/user/self", {
       method: "GET",
       credentials: "include",
     })

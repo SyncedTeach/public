@@ -16,8 +16,8 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(settings.config.api_route + "/v1/user/" + localStorage.getItem("user_id"), {
-          method: "POST",
+        const response = await fetch(settings.config.api_route + "/v1/user/self", {
+          method: "GET",
           credentials: "include",
         });
         const data = await response.json();
