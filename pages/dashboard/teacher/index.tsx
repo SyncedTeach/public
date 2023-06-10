@@ -12,6 +12,7 @@ import {
   Input,
   Card,
   LinearProgress,
+  Chip
 } from "@mui/material";
 import Icon from "@mui/material/Icon";
 
@@ -25,6 +26,7 @@ interface ClassR {
   id: string;
   size: string;
   owner: string;
+  owned: boolean;
 }
 
 export default function Dashboard() {
@@ -36,6 +38,11 @@ export default function Dashboard() {
   });
 
   const [classes, setClasses] = useState<ClassR[]>([]);
+  const [manualJoinCode, setManualJoinCode] = useState<string>("");
+
+  const [createClass, setCreateClass] = useState<boolean>(false);
+  const [classNewName, setClassNewName] = useState<string>("");
+  const [classNewStatus, setClassStatus] = useState<string>("");
 
   useEffect(() => {
     router.push(`/dashboard/teacher?page=${value}`);
@@ -77,7 +84,12 @@ export default function Dashboard() {
           return Promise.resolve(false);
         }
         if (res.data.groups) {
-          // setClasses(res.data.groups);
+          setClasses(res.data.groups);
+          // return
+          // data.groups = {
+          //   owner: groupsOwned.map(formatGroup),
+          //   member: groupsIn.map(formatGroup),
+          // };
         }
         console.log(res.data);
         return true;
@@ -117,6 +129,123 @@ export default function Dashboard() {
     </div>
   );
 
+  const handleJoinGroup = () => {
+    console.log("Entered: " + manualJoinCode);
+    fetch(`${settings.config.api_route}/v1/groups/join/` + manualJoinCode, {
+      method: "POST",
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+        if (res.success !== true) {
+          // console.log("error " + res.data);
+          return Promise.resolve(false);
+        }
+        router.push(`/dashboard/teacher/class?id=${res.groupID}`);
+        return true;
+      }
+      );
+  };
+
+  const handleCreateGroup = () => {
+    if (classNewName === "") {
+      setClassStatus("Please enter a name");
+      return;
+    }
+    fetch(`${settings.config.api_route}/v1/groups/new`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: classNewName,
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+        if (res.success !== true) {
+          console.log("error " + res.data);
+          return Promise.resolve(false);
+        }
+        router.push(`/dashboard/teacher/class?id=${res.id}`);
+        return true;
+      }
+      );
+  };
+
+  const createClassPage = (
+    <Backdrop open={createClass} style={{
+      zIndex: 1000,
+      color: '#fff',
+      justifyContent: "center",
+      display: "flex",
+
+    }}
+    >
+      {/* <div className={styles.section1} style={{
+        backgroundColor: "#1A2027",
+        backgroundImage: "",
+      }}> */}
+        <div className={styles.strcontainer}>
+          <Card
+            sx={{
+              p: 2,
+              margin: "20px",
+              maxWidth: 500,
+              maxHeight: "auto",
+              flexGrow: 1,
+              backgroundColor: "#1A2027",
+            }}
+          >
+            <p style={{
+              color: "#42ba96",
+              fontSize: "20px",
+              marginBottom: "10px",
+              fontWeight: "bold",
+            }}>Create Class</p>
+
+            <p>Enter class name</p>
+
+            {classNewStatus && <p style={{ color: "red" }}>{classNewStatus}</p>}
+            <Input
+              placeholder="Class Name"
+              value={classNewName}
+              onChange={(e) => {
+                setClassNewName(e.target.value);
+              }}
+              style={{
+                color: "white",
+                backgroundColor: "#2A2F36",
+                marginBottom: "10px",
+              }}
+            />
+            <br />
+            <Button
+              variant="contained"
+              style={{ backgroundColor: "#FF6961", marginRight: "10px" }}
+              onClick={() => {
+                setClassStatus("");
+                setCreateClass(false);
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              style={{ backgroundColor: "#42ba96", marginRight: "10px" }}
+              onClick={handleCreateGroup}
+            >
+              Create
+            </Button>
+          </Card>
+        </div>
+      {/* </div> */}
+    </Backdrop>
+  );
+  
   const classesPage = (
     <div className={styles.section1}>
       <div className={styles.strcontainer}>
@@ -134,6 +263,7 @@ export default function Dashboard() {
           <p>Join class manually</p>
           <Input
             placeholder="Class Code"
+            onChange={(e) => setManualJoinCode(e.target.value)}
             style={{
               color: "white",
               backgroundColor: "#2A2F36",
@@ -141,9 +271,13 @@ export default function Dashboard() {
             }}
           />
           <br />
-          <Button variant="contained" style={{ backgroundColor: "#42ba96" }}>
+          <Button variant="contained" style={{ backgroundColor: "#42ba96", marginRight: "10px" }} onClick={handleJoinGroup} >
             Join Class
           </Button>
+          <Button variant="contained" style={{ backgroundColor: "#FFD700" }} onClick={(e) => setCreateClass(true)}>
+            Create Class
+          </Button>
+          
         </Card>
 
         <div>
@@ -168,6 +302,17 @@ export default function Dashboard() {
                     cursor: "pointer",
                   }}
                 >
+                  {item.owned && (
+                    <Chip
+                      label="Owned"
+                      style={{ backgroundColor: "#42ba96", color: "white", marginRight: "10px"}}
+                    />
+                  )}
+
+                  <Chip
+                    label={item.size + " members"}
+                    style={{ backgroundColor: "#FF6961", color: "white" }}
+                  />                  
                   <h3 style={{ color: "white" }}>{item.name}</h3>
                   <p>{item.id}</p>
                 </Paper>
@@ -187,6 +332,8 @@ export default function Dashboard() {
         return classesPage;
     }
   };
+
+
 
   const loading = (
     <>
@@ -215,6 +362,7 @@ export default function Dashboard() {
         />
       </Head>
       {data.username ? currentPage() : loading}
+      {createClassPage}
       <BottomNavigation
         showLabels
         style={{

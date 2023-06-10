@@ -30,15 +30,15 @@ export default function Dashboard() {
 
   const classes = [
     {
-      name: "Class P.2/1",
+      name: "Science",
       id: "1",
     },
     {
-      name: "Class M.48",
+      name: "Maths",
       id: "2",
     },
     {
-      name: "Class M.58",
+      name: "English",
       id: "3",
     },
   ];
@@ -77,7 +77,7 @@ export default function Dashboard() {
   const homePage = (
     <div className={styles.section1}>
       <div className={styles.strcontainer}>
-        <h2>Welcome {data.username}, this is your teacher panel</h2>
+        <h2>Hey {data.username}, Don't forget to check all your work! </h2>
         <br></br>
         <Grid container spacing={2} justifyContent="center">
           <Grid item xs={12} sm={6}>
@@ -89,16 +89,14 @@ export default function Dashboard() {
                 flexGrow: 1,
               }}
             >
-              <h3 style={{ color: "white" }}>class-subject</h3>
+              <h3 style={{ color: "white" }}>Summary</h3>
               <br />
 
               <p style={{ color: "#42ba96", fontSize: "20px" }}>You have</p>
-              <p>class-students-size Students</p>
+              <p>students-assignment-size Assignments</p>
               <br />
-              <p style={{ color: "#FFD700", fontSize: "20px" }}>
-                You&apos;re teaching
-              </p>
-              <p>class-classroom-size Classrooms</p>
+              <p style={{ color: "#42ba96", fontSize: "20px" }}>You have</p>
+              <p>students-exams-(week)-size exams this week</p>
             </Paper>
           </Grid>
         </Grid>
@@ -106,11 +104,11 @@ export default function Dashboard() {
     </div>
   );
 
-  const classesPage = (
+  const subjectPage = (
     <div className={styles.section1}>
       <div className={styles.strcontainer}>
         {/* listing classes */}
-        <h2>Classes</h2>
+        <h2>Subject</h2>
         <Card
           sx={{
             p: 2,
@@ -147,7 +145,7 @@ export default function Dashboard() {
               <Grid item xs={12} sm={6} key={item.id}>
                 <Paper
                   onClick={() =>
-                    router.push(`/dashboard/teacher/class?id=${item.id}`)
+                    router.push(`/dashboard/student/subject?id=${item.id}`)
                   }
                   sx={{
                     p: 2,
@@ -169,12 +167,23 @@ export default function Dashboard() {
     </div>
   );
 
+  const todoPage = (
+    <div className={styles.section1}>
+      <div className={styles.strcontainer}>
+        <h2>Todo</h2>
+        <p>Todo</p>
+      </div>
+    </div>
+  );
+
   const currentPage = () => {
     switch (value) {
       case 0:
         return homePage;
       case 1:
-        return classesPage;
+        return subjectPage;
+      case 2:
+        return todoPage;
     }
   };
 
@@ -223,7 +232,8 @@ export default function Dashboard() {
         }}
       >
         <BottomNavigationAction label="Home" icon={<Icon>home</Icon>} />
-        <BottomNavigationAction label="Classes" icon={<Icon>class</Icon>} />
+        <BottomNavigationAction label="Subject" icon={<Icon>class</Icon>} />
+        <BottomNavigationAction label="Todo" icon={<Icon>format_list_bulleted</Icon>} />
         <BottomNavigationAction label="Settings" icon={<Icon>settings</Icon>} />
         {/* <BottomNavigationAction label="Nearby" icon={<LocationOnIcon />} /> */}
       </BottomNavigation>
