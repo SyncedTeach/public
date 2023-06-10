@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
 import Head from "next/head";
 import Image from "next/image";
 import Button from "@mui/material/Button";
+import styles from "@/styles/landing.module.css";
+import LandingUserOptions from "@/components/LandingUserOptions";
+import "@/styles/globals.css";
 import {
   BottomNavigation,
   BottomNavigationAction,
@@ -12,20 +13,12 @@ import {
   Input,
   Card,
   LinearProgress,
+  CircularProgress,
 } from "@mui/material";
 import Icon from "@mui/material/Icon";
-
-import styles from "@/styles/landing.module.css";
-import LandingUserOptions from "@/components/LandingUserOptions";
-import "@/styles/globals.css";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import settings from "@/utils/settings";
-
-interface ClassR {
-  name: string;
-  id: string;
-  size: string;
-  owner: string;
-}
 
 export default function Dashboard() {
   const [value, setValue] = useState(0);
@@ -35,54 +28,50 @@ export default function Dashboard() {
     username: "",
   });
 
-  const [classes, setClasses] = useState<ClassR[]>([]);
-
+  const classes = [
+    {
+      name: "Class P.2/1",
+      id: "1",
+    },
+    {
+      name: "Class M.48",
+      id: "2",
+    },
+    {
+      name: "Class M.58",
+      id: "3",
+    },
+  ];
   useEffect(() => {
-    router.push(`/dashboard/teacher?page=${value}`);
+    router.push(`/dashboard/student?page=${value}`);
   }, [value]);
 
   useEffect(() => {
     if (router.query.page) {
       setValue(parseInt(router.query.page as string));
     }
-    fetch(`${settings.config.api_route}/v1/user/${localStorage.getItem("user_id")}`, {
-      method: "GET",
-      credentials: "include",
-    })
+    fetch(
+      settings.config.api_route + "/v1/user/" + localStorage.getItem("user_id"),
+      {
+        method: "GET",
+        credentials: "include",
+      }
+    )
       .then((res) => res.json())
       .then((res) => {
         if (res.success !== true) {
           console.log("error " + res.data);
           router.push("/dashboard");
-          return Promise.resolve(false);
+          return Promise.resolve(false); // Return a promise that resolves to false
         }
-        if (!res.data.membership || !res.data.membership.isTeacher) {
-          router.push("/error?cause=not-teacher");
-          return false;
+        if (!res.data.membership || !res.data.membership.isStudent) {
+          router.push("/error?cause=not-student");
+          return false; // Return false
         }
         setData(res.data);
         console.log(res.data);
-        return true;
+        return true; // Return true
       });
-
-    fetch(`${settings.config.api_route}/v1/user/${localStorage.getItem("user_id")}/teacher-data`, {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.success !== true) {
-          console.log("error " + res.data);
-          router.push("/dashboard");
-          return Promise.resolve(false);
-        }
-        if (res.data.groups) {
-          // setClasses(res.data.groups);
-        }
-        console.log(res.data);
-        return true;
-      });
-
   }, []);
 
   const homePage = (
@@ -120,6 +109,7 @@ export default function Dashboard() {
   const classesPage = (
     <div className={styles.section1}>
       <div className={styles.strcontainer}>
+        {/* listing classes */}
         <h2>Classes</h2>
         <Card
           sx={{
@@ -214,6 +204,8 @@ export default function Dashboard() {
           href="https://fonts.googleapis.com/icon?family=Material+Icons"
         />
       </Head>
+      {/* if data is empty show <LinearProgress /> if not current page */}
+      {/* {currentPage()} */}
       {data.username ? currentPage() : loading}
       <BottomNavigation
         showLabels
@@ -221,16 +213,19 @@ export default function Dashboard() {
           position: "fixed",
           bottom: 0,
           width: "100%",
+          // backgroundColor: "#1A2027",
           color: "white",
         }}
         value={value}
         onChange={(event, newValue) => {
+          // console.log(newValue);
           setValue(newValue);
         }}
       >
         <BottomNavigationAction label="Home" icon={<Icon>home</Icon>} />
         <BottomNavigationAction label="Classes" icon={<Icon>class</Icon>} />
         <BottomNavigationAction label="Settings" icon={<Icon>settings</Icon>} />
+        {/* <BottomNavigationAction label="Nearby" icon={<LocationOnIcon />} /> */}
       </BottomNavigation>
     </>
   );

@@ -64,7 +64,7 @@ const LoginPage = () => {
     response.then((data) => {
       if (data.success === true) {
         setError("");
-        setStatus("Success! Redirecting...");
+        setStatus("Success! Redirecting to login page...");
         setTimeout(() => {
           router.push("/login");
         }, 1000);
@@ -78,7 +78,6 @@ const LoginPage = () => {
     // if logged in redirect to home page
     // if not logged in, do nothing
 
-    localStorage.setItem("user", JSON.stringify({ name: "John Doe" }));
   }, []);
 
   return (

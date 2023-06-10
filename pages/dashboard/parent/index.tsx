@@ -43,7 +43,7 @@ export default function Dashboard() {
     if (router.query.page) {
       setValue(parseInt(router.query.page as string));
     }
-    fetch(settings.config.api_route + "/v1/user", {
+    fetch(settings.config.api_route + "/v1/user/"+localStorage.getItem("user_id"), {
       method: "GET",
       credentials: "include",
     })
@@ -51,6 +51,7 @@ export default function Dashboard() {
       .then((res): boolean | Promise<boolean> => {
         if (res.success !== true) {
           console.log("error " + res.data);
+          router.push("/dashboard");
           return Promise.resolve(false);
         }
         // Validate user role
@@ -235,14 +236,17 @@ export default function Dashboard() {
 
   const loading = (
     <>
+      <LinearProgress />
       <div className={styles.section1}>
         <div className={styles.strcontainer}>
-        <h1>SyncedTeach</h1>
-        <p>Loading...</p>
+          <h1>SyncedTeach</h1>
+          <p>Loading...</p>
+        </div>
       </div>
-      </div>
-      <LinearProgress />
-      <Backdrop open={true}></Backdrop>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={true}
+      ></Backdrop>
     </>
   );
 

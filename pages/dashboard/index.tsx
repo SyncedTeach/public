@@ -16,8 +16,8 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(settings.config.api_route + "/v1/user", {
-          method: "GET",
+        const response = await fetch(settings.config.api_route + "/v1/user/" + localStorage.getItem("user_id"), {
+          method: "POST",
           credentials: "include",
         });
         const data = await response.json();
@@ -51,17 +51,19 @@ export default function Dashboard() {
 
   const loading = (
     <>
+      <LinearProgress />
       <div className={styles.section1}>
         <div className={styles.strcontainer}>
-        <h1>SyncedTeach</h1>
-        <p>Loading...</p>
+          <h1>SyncedTeach</h1>
+          <p>Loading...</p>
+        </div>
       </div>
-      </div>
-      <LinearProgress />
-      <Backdrop open={true}></Backdrop>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={true}
+      ></Backdrop>
     </>
   );
-
 
   const isMessageLoading = message.includes("Loading");
   const isMessageUserType = message.includes("You are a");
@@ -72,18 +74,19 @@ export default function Dashboard() {
         <title>SyncedTeach</title>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
-      {isMessageLoading && loading}
-
+      {isMessageLoading ? loading : (
       <div className={styles.section1}>
-        <div className={styles.strcontainer}>
-          <h1>SyncedTeach</h1>
-          <p>{message}</p>
-          <br />
-          <Button variant="contained" onClick={() => router.push("/user/setup")} disabled={isMessageLoading || isMessageUserType}>
-            Setup
-          </Button>
-        </div>
+      <div className={styles.strcontainer}>
+        <h1>SyncedTeach</h1>
+        <p>{message}</p>
+        <br />
+        <Button variant="contained" onClick={() => router.push("/user/setup")} disabled={isMessageLoading || isMessageUserType}>
+          Setup
+        </Button>
       </div>
+    </div>
+      )}
+
     </>
   );
 }
