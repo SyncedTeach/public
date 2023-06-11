@@ -14,6 +14,8 @@ import {
   Card,
   LinearProgress,
   CircularProgress,
+  Chip,
+  Badge
 } from "@mui/material";
 import Icon from "@mui/material/Icon";
 import { useRouter } from "next/router";
@@ -50,13 +52,10 @@ export default function Dashboard() {
     if (router.query.page) {
       setValue(parseInt(router.query.page as string));
     }
-    fetch(
-      settings.config.api_route + "/v1/user/self",
-      {
-        method: "GET",
-        credentials: "include",
-      }
-    )
+    fetch(settings.config.api_route + "/v1/user/self", {
+      method: "GET",
+      credentials: "include",
+    })
       .then((res) => res.json())
       .then((res) => {
         if (res.success !== true) {
@@ -90,13 +89,48 @@ export default function Dashboard() {
               }}
             >
               <h3 style={{ color: "white" }}>Summary</h3>
-              <br />
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <p style={{ fontSize: "30px", marginRight: "10px" }}>5</p>
+                                {/* yellow */}
+                <p style={{ color: "#42ba96", fontSize: "20px" }}>
+                  Un checked posts
+                  <Chip label="New" style={{backgroundColor: "#42ba96", color: "black", marginLeft: "10px"}} />
+                </p>
+              </div>
 
-              <p style={{ color: "#42ba96", fontSize: "20px" }}>You have</p>
-              <p>students-assignment-size Assignments</p>
-              <br />
-              <p style={{ color: "#42ba96", fontSize: "20px" }}>You have</p>
-              <p>students-exams-(week)-size exams this week</p>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <p style={{ fontSize: "30px", marginRight: "10px" }}>5</p>
+                <p style={{ color: "#FFD700", fontSize: "20px" }}>
+                  Un checked assignments
+                  <Chip label="New" style={{backgroundColor: "#FFD700", color: "black", marginLeft: "10px"}} />
+                </p>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <p style={{ fontSize: "30px", marginRight: "10px" }}>5</p>
+                <p style={{ color: "#ff0000", fontSize: "20px" }}>
+                  Up coming exams this week
+                  <Chip label="New" style={{backgroundColor: "#ff0000", color: "black", marginLeft: "10px"}} />
+                </p>
+              </div>
+
             </Paper>
           </Grid>
         </Grid>
@@ -182,7 +216,7 @@ export default function Dashboard() {
         return homePage;
       case 1:
         return subjectPage;
-      case 2:
+      case 3:
         return todoPage;
     }
   };
@@ -233,7 +267,12 @@ export default function Dashboard() {
       >
         <BottomNavigationAction label="Home" icon={<Icon>home</Icon>} />
         <BottomNavigationAction label="Subject" icon={<Icon>class</Icon>} />
-        <BottomNavigationAction label="Todo" icon={<Icon>format_list_bulleted</Icon>} />
+        {/* Posts */}
+          <BottomNavigationAction label="Posts" icon={<Badge color="error" badgeContent={4} ><Icon >post_add</Icon></Badge>} />
+        <BottomNavigationAction
+          label="Todo"
+          icon={<Icon>format_list_bulleted</Icon>}
+        />
         <BottomNavigationAction label="Settings" icon={<Icon>settings</Icon>} />
         {/* <BottomNavigationAction label="Nearby" icon={<LocationOnIcon />} /> */}
       </BottomNavigation>

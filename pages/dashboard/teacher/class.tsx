@@ -1,6 +1,5 @@
 import Head from "next/head";
 import Image from "next/image";
-import * as React from "react";
 import Button from "@mui/material/Button";
 import styles from "@/styles/landing.module.css";
 import LandingUserOptions from "@/components/LandingUserOptions";
@@ -10,38 +9,69 @@ import {
   BottomNavigationAction,
   Grid,
   Paper,
-  LinearProgress
+  LinearProgress,
 } from "@mui/material";
 import Icon from "@mui/material/Icon";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import settings from "@/utils/settings";
+
+interface Group {
+  name: string;
+  members: any[];
+  owners: any[];
+  joinCode: string;
+  private: boolean;
+}
 
 export default function Dashboard() {
-  const [value, setValue] = React.useState(1);
+  const [value, setValue] = useState(1);
+  const [data, setData] = useState<Group>();
   const router = useRouter();
 
-//   get id query
-    const { id } = router.query;
-
-  const students = [
-    {
-        name: "Student 1",
-        id: "38xx",
-        number: "1",
-        overdue: "1",
-    },
-    {
-        name: "Student 2",
-        id: "38xx",
-        number: "2",
-        overdue: "0",
-    },
-    {
-        name: "Student 3",
-        id: "38xx",
-        number: "3",
-        overdue: "0",
-    },
-  ];
+  //   get id query
+  const { id } = router.query;
+  useEffect(() => {
+    // Fetch data only if `id` is defined
+    if (id) {
+      fetch(settings.config.api_route + "/v1/groups/" + id, {
+        method: "GET",
+        credentials: "include",
+      })
+        .then((res) => {
+          if (res.status !== 200) return;
+          return res.json();
+        })
+        .then((res) => {
+          // check if it is a valid group
+          if (!res || !res.data) return;
+          let group = res.data as Group;
+          console.log(group);
+          setData(group);
+          console.log(data);
+        });
+    }
+  }, [id, router.query]); // Include router.query as a dependency
+  // const students = [
+  //   {
+  //       name: "Student 1",
+  //       id: "38xx",
+  //       number: "1",
+  //       overdue: "1",
+  //   },
+  //   {
+  //       name: "Student 2",
+  //       id: "38xx",
+  //       number: "2",
+  //       overdue: "0",
+  //   },
+  //   {
+  //       name: "Student 3",
+  //       id: "38xx",
+  //       number: "3",
+  //       overdue: "0",
+  //   },
+  // ];
 
   const homePage = (
     <div className={styles.section1}>
@@ -95,7 +125,7 @@ export default function Dashboard() {
   );
 
   const studentsPage = (
-    <div className={styles.section1} >
+    <div className={styles.section1}>
       <div className={styles.strcontainer}>
         {/* listing classes */}
         <h2>Students</h2>
@@ -107,24 +137,33 @@ export default function Dashboard() {
             direction="column"
             justifyContent="center"
           >
-            {students.map((item) => (
-              <Grid item xs={12} sm={6} key={item.id}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    margin: "auto",
-                    maxWidth: 500,
-                    flexGrow: 1,
-                    backgroundColor: "#1A2027",
-                    cursor: "pointer",
-                  }}
-                >
-                  <h3 style={{ color: "white" }}>{item.id} - {item.name}</h3>
-                    <p>Number - {item.number}</p>
-                    <p style={{ color: "#ff0000" }}>Overdue - {item.overdue}</p>
-                </Paper>
-              </Grid>
-            ))}
+            {data?.members.map(
+              (item: {
+                id: string;
+                name: string;
+                // number: string;
+                // overdue: string;
+              }) => (
+                <Grid item xs={12} sm={6} key={item.id}>
+                  <Paper
+                    sx={{
+                      p: 2,
+                      margin: "auto",
+                      maxWidth: 500,
+                      flexGrow: 1,
+                      backgroundColor: "#1A2027",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <h3 style={{ color: "white" }}>
+                      {item.id} - {item.name}
+                    </h3>
+                    {/* <p>Number - {item.number}</p> */}
+                    {/* <p style={{ color: "#ff0000" }}>Overdue - {item.overdue}</p> */}
+                  </Paper>
+                </Grid>
+              )
+            )}
           </Grid>
         </div>
       </div>
@@ -135,7 +174,7 @@ export default function Dashboard() {
     switch (value) {
       case 1:
         return homePage;
-    case 2:
+      case 2:
         return studentsPage;
     }
   };
@@ -162,7 +201,7 @@ export default function Dashboard() {
         }}
         value={value}
         onChange={(event, newValue) => {
-        //   console.log(newValue);
+          //   console.log(newValue);
           setValue(newValue);
           if (newValue === 0) {
             router.push("/dashboard/teacher?page=1");
@@ -172,11 +211,13 @@ export default function Dashboard() {
         <BottomNavigationAction label="Back" icon={<Icon>arrow_back</Icon>} />
         <BottomNavigationAction label="Home" icon={<Icon>home</Icon>} />
         <BottomNavigationAction label="Students" icon={<Icon>people</Icon>} />
-        <BottomNavigationAction
+        {/* <BottomNavigationAction
           label="Assignment"
           icon={<Icon>assignment</Icon>}
         />
-        <BottomNavigationAction label="Exams" icon={<Icon>quiz</Icon>} />
+        <BottomNavigationAction label="Exams" icon={<Icon>quiz</Icon>} /> */}
+        {/* Posts */}
+        <BottomNavigationAction label="Posts" icon={<Icon>post_add</Icon>} />
         {/* <BottomNavigationAction label="Nearby" icon={<LocationOnIcon />} /> */}
       </BottomNavigation>
     </>

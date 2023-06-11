@@ -72,7 +72,7 @@ export default function Dashboard() {
         return true;
       });
 
-    fetch(`${settings.config.api_route}/v1/user/self/teacher-data`, {
+    fetch(`${settings.config.api_route}/v1/user/self/teacher`, {
       method: "GET",
       credentials: "include",
     })
@@ -112,16 +112,13 @@ export default function Dashboard() {
                 flexGrow: 1,
               }}
             >
-              <h3 style={{ color: "white" }}>class-subject</h3>
+              <h3 style={{ color: "white" }}>Summary</h3>
               <br />
 
-              <p style={{ color: "#42ba96", fontSize: "20px" }}>You have</p>
-              <p>class-students-size Students</p>
-              <br />
               <p style={{ color: "#FFD700", fontSize: "20px" }}>
                 You&apos;re teaching
               </p>
-              <p>class-classroom-size Classrooms</p>
+              <p>{classes.length} Classrooms</p>
             </Paper>
           </Grid>
         </Grid>
@@ -314,7 +311,7 @@ export default function Dashboard() {
                     style={{ backgroundColor: "#FF6961", color: "white" }}
                   />                  
                   <h3 style={{ color: "white" }}>{item.name}</h3>
-                  <p>{item.id}</p>
+                  <p>{item.owner =="" ? "Unknown" : item.owner}</p>
                 </Paper>
               </Grid>
             ))}
