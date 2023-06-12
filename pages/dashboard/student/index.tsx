@@ -15,7 +15,7 @@ import {
   LinearProgress,
   CircularProgress,
   Chip,
-  Badge
+  Badge,
 } from "@mui/material";
 import Icon from "@mui/material/Icon";
 import { useRouter } from "next/router";
@@ -76,7 +76,7 @@ export default function Dashboard() {
   const homePage = (
     <div className={styles.section1}>
       <div className={styles.strcontainer}>
-        <h2>Hey {data.username}, Don't forget to check all your work! </h2>
+        <h2>Hey {data.username}, Don&apos;t forget to check all your work! </h2>
         <br></br>
         <Grid container spacing={2} justifyContent="center">
           <Grid item xs={12} sm={6}>
