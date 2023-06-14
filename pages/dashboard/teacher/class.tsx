@@ -30,6 +30,7 @@ import { useEffect, useState } from "react";
 import settings from "@/utils/settings";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from 'dayjs';
+import ReactMarkdown from 'react-markdown';
 
 interface Group {
   name: string;
@@ -96,6 +97,7 @@ export default function Dashboard() {
   const [alertType, setAlertType] = useState<AlertColor>("success");
   //   get id query
   const { id } = router.query;
+
   const refreshData = () => {
     if (id) {
       fetch(settings.config.api_route + "/v1/groups/" + id, {
@@ -135,7 +137,7 @@ export default function Dashboard() {
   useEffect(() => {
     refreshData();
     // Fetch data only if `id` is defined
-  }, [router.isReady]); // Include router.query as a dependency
+  }, [router.isReady, id]);
   // const students = [
   //   {
   //       name: "Student 1",
@@ -324,8 +326,18 @@ export default function Dashboard() {
                               }}
                             />
                           </div>
+                          <div>
                           <h3 style={{ color: "white" }}>{item.data.title}</h3>
-                          <p>{item.data.description}</p>
+                          {/* {md.render(item.data.description)} */}
+                              {/* <div> */}
+                                {/* markdown using react-markdown */}
+                                <ReactMarkdown>
+                                  {item.data.description}
+                                </ReactMarkdown>
+
+
+                          </div>
+                              {/* </div> */}
                           {/* <p>Due Date - {item.dueDate.getTime()}</p> */}
                           <div
                             style={{
