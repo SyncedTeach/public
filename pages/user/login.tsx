@@ -54,6 +54,7 @@ const LoginPage = () => {
         if (data.success === true) {
           setError("");
           setStatus("Success! Redirecting...");
+          localStorage.setItem("user_id", data.uid);
           setTimeout(() => {
             router.push("/dashboard");
           }, 1000);

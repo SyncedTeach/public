@@ -43,14 +43,15 @@ export default function Dashboard() {
     if (router.query.page) {
       setValue(parseInt(router.query.page as string));
     }
-    fetch(settings.config.api_route + "/v1/user", {
-      method: "POST",
+    fetch(settings.config.api_route + "/v1/user/self", {
+      method: "GET",
       credentials: "include",
     })
       .then((res) => res.json())
       .then((res): boolean | Promise<boolean> => {
         if (res.success !== true) {
           console.log("error " + res.data);
+          router.push("/dashboard");
           return Promise.resolve(false);
         }
         // Validate user role
@@ -109,11 +110,13 @@ export default function Dashboard() {
       <div className={styles.strcontainer}>
         {/* listing classes */}
         <h2>Attendence</h2>
+        <br/>
         <Grid container spacing={2} justifyContent="center">
         <Paper
           sx={{
             p: 2,
-            margin: "20px",
+            marginLeft: "35px",
+            marginRight: "20px",
             maxWidth: 600,
             // maxHeight: 200,
             flexGrow: 1,
@@ -157,13 +160,15 @@ export default function Dashboard() {
             <p>student-checkout-time</p>
           </Paper>
         </Paper>
+        <br/>
         {/* Attendence summary */}
         <Paper
           sx={{
             p: 2,
-            margin: "20px",
             maxWidth: 600,
             // maxHeight: 200,
+            marginLeft: "35px",
+            marginRight: "20px",
             flexGrow: 1,
             backgroundColor: "#1A2027",
           }}
@@ -231,14 +236,17 @@ export default function Dashboard() {
 
   const loading = (
     <>
+      <LinearProgress />
       <div className={styles.section1}>
         <div className={styles.strcontainer}>
-        <h1>SyncedTeach</h1>
-        <p>Loading...</p>
+          <h1>SyncedTeach</h1>
+          <p>Loading...</p>
+        </div>
       </div>
-      </div>
-      <LinearProgress />
-      <Backdrop open={true}></Backdrop>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={true}
+      ></Backdrop>
     </>
   );
 
