@@ -98,46 +98,59 @@ export default function Dashboard() {
   //   get id query
   const { id } = router.query;
 
-  const refreshData = () => {
+  const refreshData = async () => {
     if (id) {
-      fetch(settings.config.api_route + "/v1/groups/" + id, {
-        method: "GET",
-        credentials: "include",
-      })
-        .then((res) => {
-          if (res.status !== 200) return router.push("/dashboard");
-          return res.json();
-        })
-        .then((res) => {
-          // check if it is a valid group
-          if (!res || !res.group) return;
-          let group = res.group as Group;
-          console.log(group);
-          setData(group);
-          // console.log(data);
+      try {
+        const groupResponse = await fetch(settings.config.api_route + "/v1/groups/" + id, {
+          method: "GET",
+          credentials: "include",
         });
-      fetch(settings.config.api_route + "/v1/posts/group/" + id, {
-        method: "GET",
-        credentials: "include",
-      })
-        .then((res) => res.json())
-        .then((res) => {
-          if (!res || !res.posts || !res.success) return;
-          let posts = res.posts as any[];
-          console.log(posts);
-          setData((prev) => {
-            if (prev) {
-              return { ...prev, posts: posts };
-            }
-            return prev;
-          });
+  
+        if (groupResponse.status !== 200) {
+          return router.push("/dashboard");
+        }
+  
+        const groupData = await groupResponse.json();
+  
+        if (!groupData || !groupData.group) {
+          return;
+        }
+  
+        const group = groupData.group as Group;
+        console.log(group);
+        setData(group);
+  
+        const postsResponse = await fetch(settings.config.api_route + "/v1/posts/group/" + id, {
+          method: "GET",
+          credentials: "include",
         });
+  
+        const postsData = await postsResponse.json();
+  
+        if (!postsData || !postsData.posts || !postsData.success) {
+          return;
+        }
+  
+        const posts = postsData.posts as any[];
+        console.log(posts);
+        setData((prev) => {
+          if (prev) {
+            return { ...prev, posts: posts };
+          }
+          return prev;
+        });
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
+  
   useEffect(() => {
     refreshData();
+    console.log(data?.posts);
     // Fetch data only if `id` is defined
-  }, [router.isReady, id]);
+    // refreshData(); after 2 seconds  
+  }, [router.isReady, id, router.reload, 2]);
   // const students = [
   //   {
   //       name: "Student 1",
@@ -416,7 +429,9 @@ export default function Dashboard() {
                             />
                           </div>
                           <h3 style={{ color: "white" }}>{item.data.title}</h3>
-                          <p>{item.data.description}</p>
+                          <ReactMarkdown>
+                                  {item.data.description}
+                                </ReactMarkdown>
                           <div
                             style={{
                               display: "flex",
@@ -494,7 +509,9 @@ export default function Dashboard() {
                             />
                           </div>
                           <h3 style={{ color: "white" }}>{item.data.title}</h3>
-                          <p>{item.data.description}</p>
+                          <ReactMarkdown>
+                                  {item.data.description}
+                                </ReactMarkdown>
                           <div
                             style={{
                               display: "flex",
