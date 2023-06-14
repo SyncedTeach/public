@@ -95,7 +95,7 @@ export default function Dashboard() {
         return true;
       });
 
-  }, []);
+  }, [router.isReady, router.query.page]);
 
   const homePage = (
     <div className={styles.section1}>
