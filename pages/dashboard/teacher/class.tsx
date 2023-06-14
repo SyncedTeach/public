@@ -818,10 +818,11 @@ export default function Dashboard() {
     switch (value) {
       case 1:
         return homePage;
-      case 2:
-        return studentsPage;
+        case 2:
+          return postsPage;
       case 3:
-        return postsPage;
+        return studentsPage;
+
     }
   };
 
@@ -869,6 +870,7 @@ export default function Dashboard() {
       >
         <BottomNavigationAction label="Back" icon={<Icon>arrow_back</Icon>} />
         <BottomNavigationAction label="Home" icon={<Icon>home</Icon>} />
+        <BottomNavigationAction label="Posts" icon={<Icon>post_add</Icon>} />
         <BottomNavigationAction label="Students" icon={<Icon>people</Icon>} />
         {/* <BottomNavigationAction
           label="Assignment"
@@ -876,7 +878,6 @@ export default function Dashboard() {
         />
         <BottomNavigationAction label="Exams" icon={<Icon>quiz</Icon>} /> */}
         {/* Posts */}
-        <BottomNavigationAction label="Posts" icon={<Icon>post_add</Icon>} />
         {/* <BottomNavigationAction label="Nearby" icon={<LocationOnIcon />} /> */}
       </BottomNavigation>
     </>
