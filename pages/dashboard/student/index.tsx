@@ -841,9 +841,9 @@ export default function Dashboard() {
                             </Badge>
                             <Chip
                               label={
-                                item.data.score +
+                                item?.data?.score +
                                 "/" +
-                                item.data.maxScore +
+                                item?.data?.maxScore +
                                 " Points"
                               }
                               style={{
@@ -852,15 +852,15 @@ export default function Dashboard() {
                               }}
                             />
                             <Chip
-                              label={"Due on " + item.data.dueDate}
+                              label={"Due on " + item?.data?.dueDate}
                               style={{
                                 backgroundColor: "transparent",
                                 color: "white",
                               }}
                             />
                           </div>
-                          <h3 style={{ color: "white" }}>{item.data.title}</h3>
-                          <p>{item.data.description}</p>
+                          <h3 style={{ color: "white" }}>{item?.data?.title}</h3>
+                          <p>{item?.data?.description}</p>
                           <div
                             style={{
                               display: "flex",
