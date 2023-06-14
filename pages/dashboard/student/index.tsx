@@ -24,7 +24,7 @@ import { useRouter } from "next/router";
 import { use, useEffect, useState } from "react";
 import settings from "@/utils/settings";
 import { Group } from "@mui/icons-material";
-
+import ReactMarkdown from "react-markdown";
 interface Group {
   name: string;
   members: any[];
@@ -97,64 +97,74 @@ export default function Dashboard() {
   }, [value]);
 
   const fetchingData = async () => {
-    fetch(settings.config.api_route + "/v1/user/self", {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.success !== true) {
-          console.log("error " + res.data);
-          router.push("/dashboard");
-          return Promise.resolve(false); // Return a promise that resolves to false
+    try {
+      const userDataResponse = await fetch(
+        settings.config.api_route + "/v1/user/self",
+        {
+          method: "GET",
+          credentials: "include",
         }
-        if (!res.data.membership || !res.data.membership.isStudent) {
-          router.push("/error?cause=not-student");
-          return false; // Return false
-        }
-        setData(res.data);
-        console.log(res.data);
-        return true; // Return true
-      });
+      );
 
-    // groups
-    fetch(settings.config.api_route + "/v1/user/self/student", {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.success !== true) {
-          console.log("error " + res.data);
-          router.push("/dashboard");
-          return Promise.resolve(false); // Return a promise that resolves to false
-        }
-        // Parameter 'prev' implicitly has an 'any' type.ts(7006)
-        // @ts-ignore
-        setData((prev) => ({ ...prev, groups: res.data.groups }));
-        console.log(res.data);
-        return true; // Return true
-      });
+      const userData = await userDataResponse.json();
 
-    // posts
-    fetch(settings.config.api_route + "/v1/posts/self", {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.success !== true) {
-          console.log("error " + res.data);
-          router.push("/dashboard");
-          return Promise.resolve(false); // Return a promise that resolves to false
-        }
-        // Parameter 'prev' implicitly has an 'any' type.ts(7006)
-        // @ts-ignore
-        setData((prev) => ({ ...prev, allPosts: res.posts }));
-        console.log(res.posts);
+      if (userData.success !== true) {
+        console.log("error " + userData.data);
+        router.push("/dashboard");
+        return Promise.resolve(false);
+      }
 
-        return true; // Return true
-      });
+      if (!userData.data.membership || !userData.data.membership.isStudent) {
+        router.push("/error?cause=not-student");
+        return false;
+      }
+
+      setData(userData.data);
+      console.log(userData.data);
+
+      const groupsResponse = await fetch(
+        settings.config.api_route + "/v1/user/self/student",
+        {
+          method: "GET",
+          credentials: "include",
+        }
+      );
+
+      const groupsData = await groupsResponse.json();
+
+      if (groupsData.success !== true) {
+        console.log("error " + groupsData.data);
+        router.push("/dashboard");
+        return Promise.resolve(false);
+      }
+
+      setData((prev) => ({ ...prev, groups: groupsData.data.groups }));
+      console.log(groupsData.data);
+
+      const postsResponse = await fetch(
+        settings.config.api_route + "/v1/posts/self",
+        {
+          method: "GET",
+          credentials: "include",
+        }
+      );
+
+      const postsData = await postsResponse.json();
+
+      if (postsData.success !== true) {
+        console.log("error " + postsData.data);
+        router.push("/dashboard");
+        return Promise.resolve(false);
+      }
+
+      setData((prev) => ({ ...prev, allPosts: postsData.posts }));
+      console.log(postsData.posts);
+
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
   };
 
   useEffect(() => {
@@ -531,20 +541,22 @@ export default function Dashboard() {
                 flexDirection: "row",
               }}
             >
-              <div style={{margin: "10px"}}>
+              <div style={{ margin: "10px" }}>
                 <p>
                   <b>Filter by:</b>
                 </p>
                 <Select
                   value={postTypeSee}
                   onChange={(e) => {
-                    if (e.target.value === "all" || e.target.value === "announcement") {
-                      console.log(e.target.value)
+                    if (
+                      e.target.value === "all" ||
+                      e.target.value === "announcement"
+                    ) {
+                      console.log(e.target.value);
                       setPostSortBy("date" as string);
                     }
-                    setPostTypeSee(e.target.value as string)
+                    setPostTypeSee(e.target.value as string);
                   }}
-
                   label="All"
                   style={{
                     color: "white",
@@ -562,15 +574,16 @@ export default function Dashboard() {
                 </Select>
               </div>
 
-              <div style={{margin: "10px"}}>
+              <div style={{ margin: "10px" }}>
                 <p>
                   <b>Sort by:</b>
                 </p>
                 <Select
                   value={postSortBy}
                   onChange={(e) => {
-                    console.log(e.target.value)
-                    setPostSortBy(e.target.value as string)}}
+                    console.log(e.target.value);
+                    setPostSortBy(e.target.value as string);
+                  }}
                   label="Date"
                   style={{
                     color: "white",
@@ -582,9 +595,14 @@ export default function Dashboard() {
                   }}
                 >
                   <MenuItem value={"date"}>Post Date</MenuItem>
-                  <MenuItem value={"score"} disabled={
-                    postTypeSee === "all" || postTypeSee === "announcement"
-                  }>Score</MenuItem>
+                  <MenuItem
+                    value={"score"}
+                    disabled={
+                      postTypeSee === "all" || postTypeSee === "announcement"
+                    }
+                  >
+                    Score
+                  </MenuItem>
                 </Select>
               </div>
             </Paper>
@@ -596,7 +614,7 @@ export default function Dashboard() {
                   type?: string;
                   data?: {
                     title?: string;
-                    description?: string;
+                    description: string;
                     dueDate?: Date;
                     maxScore?: number;
                     score?: number;
@@ -662,7 +680,8 @@ export default function Dashboard() {
                           <h3 style={{ color: "white" }}>
                             {item?.data?.title}
                           </h3>
-                          <p>{item?.data?.description}</p>
+                          <ReactMarkdown>{item?.data?.description || "Loading..."}</ReactMarkdown>
+
                           {/* <p>Due Date - {item.dueDate.getTime()}</p> */}
                           <div
                             style={{
@@ -763,7 +782,7 @@ export default function Dashboard() {
                           <h3 style={{ color: "white" }}>
                             {item?.data?.title}
                           </h3>
-                          <p>{item?.data?.description}</p>
+                          <ReactMarkdown>{item?.data?.description || "Loading..."}</ReactMarkdown>
                           <div
                             style={{
                               display: "flex",
@@ -859,8 +878,10 @@ export default function Dashboard() {
                               }}
                             />
                           </div>
-                          <h3 style={{ color: "white" }}>{item?.data?.title}</h3>
-                          <p>{item?.data?.description}</p>
+                          <h3 style={{ color: "white" }}>
+                            {item?.data?.title}
+                          </h3>
+                          <ReactMarkdown>{item?.data?.description || "Loading..."}</ReactMarkdown>
                           <div
                             style={{
                               display: "flex",
