@@ -680,7 +680,12 @@ export default function Dashboard() {
                           <h3 style={{ color: "white" }}>
                             {item?.data?.title}
                           </h3>
-                          <ReactMarkdown>{item?.data?.description || "Loading..."}</ReactMarkdown>
+                          <div style={{ textAlign: "left" }}>
+                            {/* markdown using react-markdown */}
+                            <ReactMarkdown>
+                              {item?.data?.description ?? "Loading..."}
+                            </ReactMarkdown>
+                          </div>
 
                           {/* <p>Due Date - {item.dueDate.getTime()}</p> */}
                           <div
@@ -782,8 +787,12 @@ export default function Dashboard() {
                           <h3 style={{ color: "white" }}>
                             {item?.data?.title}
                           </h3>
-                          <ReactMarkdown>{item?.data?.description || "Loading..."}</ReactMarkdown>
-                          <div
+                          <div style={{ textAlign: "left" }}>
+                            {/* markdown using react-markdown */}
+                            <ReactMarkdown>
+                              {item?.data?.description ?? "Loading..."}
+                            </ReactMarkdown>
+                          </div>                          <div
                             style={{
                               display: "flex",
                               flexWrap: "wrap",
@@ -881,8 +890,12 @@ export default function Dashboard() {
                           <h3 style={{ color: "white" }}>
                             {item?.data?.title}
                           </h3>
-                          <ReactMarkdown>{item?.data?.description || "Loading..."}</ReactMarkdown>
-                          <div
+                          <div style={{ textAlign: "left" }}>
+                            {/* markdown using react-markdown */}
+                            <ReactMarkdown>
+                              {item?.data?.description ?? "Loading..."}
+                            </ReactMarkdown>
+                          </div>                          <div
                             style={{
                               display: "flex",
                               flexWrap: "wrap",

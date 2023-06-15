@@ -31,6 +31,7 @@ import settings from "@/utils/settings";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from 'dayjs';
 import ReactMarkdown from 'react-markdown';
+import { useQRCode } from 'next-qrcode';
 
 interface Group {
   name: string;
@@ -95,8 +96,13 @@ export default function Dashboard() {
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState<AlertColor>("success");
+
+  const [inviteQRopen, setInviteQROpen] = useState(false);
+
   //   get id query
   const { id } = router.query;
+
+  const { Canvas } = useQRCode();
 
   const refreshData = async () => {
     if (id) {
@@ -105,32 +111,32 @@ export default function Dashboard() {
           method: "GET",
           credentials: "include",
         });
-  
+
         if (groupResponse.status !== 200) {
           return router.push("/dashboard");
         }
-  
+
         const groupData = await groupResponse.json();
-  
+
         if (!groupData || !groupData.group) {
           return;
         }
-  
+
         const group = groupData.group as Group;
         console.log(group);
         setData(group);
-  
+
         const postsResponse = await fetch(settings.config.api_route + "/v1/posts/group/" + id, {
           method: "GET",
           credentials: "include",
         });
-  
+
         const postsData = await postsResponse.json();
-  
+
         if (!postsData || !postsData.posts || !postsData.success) {
           return;
         }
-  
+
         const posts = postsData.posts as any[];
         console.log(posts);
         setData((prev) => {
@@ -144,7 +150,7 @@ export default function Dashboard() {
       }
     }
   };
-  
+
   useEffect(() => {
     refreshData();
     console.log(data?.posts);
@@ -217,7 +223,7 @@ export default function Dashboard() {
               <p style={{ fontSize: "20px" }}>
                 {(data?.posts != undefined && data?.posts.filter((post) => post.type === "exam").length > 0) ?
                   data?.posts.filter((post) => post.type === "exam")[0].data
-                    .title : "No exams"} 
+                    .title : "No exams"}
               </p>
               <br />
               <p style={{ color: "#42ba96" }}>date</p>
@@ -229,6 +235,28 @@ export default function Dashboard() {
               </p>
             </Paper>
           </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <Paper
+              sx={{
+                p: 2,
+                margin: "auto",
+                maxWidth: 500,
+                flexGrow: 1,
+              }}
+            >
+              {/* Invite code */}
+              <h3 style={{ color: "white" }}>Invite Code</h3>
+              <br />
+              <p style={{ color: "#42ba96" }}>code</p>
+              <p style={{ fontSize: "20px" }}>{data?.joinCode}</p>
+              <br />
+              <p style={{ color: "#FFD700" }}>QR Code</p>
+              <Button variant="contained" color="primary" onClick={() => setInviteQROpen(true)}>
+                Generate QR Code
+              </Button>
+              </Paper>
+              </Grid>
         </Grid>
       </div>
     </div>
@@ -340,17 +368,18 @@ export default function Dashboard() {
                             />
                           </div>
                           <div>
-                          <h3 style={{ color: "white" }}>{item.data.title}</h3>
-                          {/* {md.render(item.data.description)} */}
-                              {/* <div> */}
-                                {/* markdown using react-markdown */}
-                                <ReactMarkdown>
-                                  {item.data.description}
-                                </ReactMarkdown>
+                            <h3 style={{ color: "white" }}>{item.data.title}</h3>
+                            {/* {md.render(item.data.description)} */}
+                            <div style={{ textAlign: "left" }}>
+                              {/* markdown using react-markdown */}
+                              <ReactMarkdown>
+                                {item.data.description}
+                              </ReactMarkdown>
+                            </div>
 
 
                           </div>
-                              {/* </div> */}
+                          {/* </div> */}
                           {/* <p>Due Date - {item.dueDate.getTime()}</p> */}
                           <div
                             style={{
@@ -429,9 +458,12 @@ export default function Dashboard() {
                             />
                           </div>
                           <h3 style={{ color: "white" }}>{item.data.title}</h3>
-                          <ReactMarkdown>
-                                  {item.data.description}
-                                </ReactMarkdown>
+                          <div style={{ textAlign: "left" }}>
+                            {/* markdown using react-markdown */}
+                            <ReactMarkdown>
+                              {item.data.description}
+                            </ReactMarkdown>
+                          </div>
                           <div
                             style={{
                               display: "flex",
@@ -509,9 +541,12 @@ export default function Dashboard() {
                             />
                           </div>
                           <h3 style={{ color: "white" }}>{item.data.title}</h3>
-                          <ReactMarkdown>
-                                  {item.data.description}
-                                </ReactMarkdown>
+                          <div style={{ textAlign: "left" }}>
+                            {/* markdown using react-markdown */}
+                            <ReactMarkdown>
+                              {item.data.description}
+                            </ReactMarkdown>
+                          </div>
                           <div
                             style={{
                               display: "flex",
@@ -579,34 +614,35 @@ export default function Dashboard() {
       })
         .then((res) => {
           if (res.status !== 200) {
-          //   <Snackbar
-          //   open={true}
-          //   autoHideDuration={6000}
-          // >
-          //   <Alert severity="error"> 
-          //     Error occured while creating post ({res.status})
-          //   </Alert>
-          // </Snackbar>
+            //   <Snackbar
+            //   open={true}
+            //   autoHideDuration={6000}
+            // >
+            //   <Alert severity="error"> 
+            //     Error occured while creating post ({res.status})
+            //   </Alert>
+            // </Snackbar>
             setAlertMessage("Error occured while creating post (" + res.status + ")");
             setAlertType("error");
             setAlertOpen(true);
-    
+
           }
-          return res.json()})
+          return res.json()
+        })
         .then((data) => {
           if (data.success) {
-          //   <Snackbar
-          //   open={true}
-          //   autoHideDuration={6000}
-          // >
-          //   <Alert severity="success"> 
-          //     Post created successfully
-          //   </Alert>
-          // </Snackbar>
+            //   <Snackbar
+            //   open={true}
+            //   autoHideDuration={6000}
+            // >
+            //   <Alert severity="success"> 
+            //     Post created successfully
+            //   </Alert>
+            // </Snackbar>
             setAlertMessage("Post created successfully");
             setAlertType("success");
             setAlertOpen(true);
-    
+
             setCreatingPost(false);
             setPostTitle("");
             setPostDescription("");
@@ -618,15 +654,15 @@ export default function Dashboard() {
             setAlertMessage("Error creating post: " + data.error);
             setAlertType("error");
             setAlertOpen(true);
-            
-          //   <Snackbar
-          //   open={true}
-          //   autoHideDuration={6000}
-          // >
-          //   <Alert severity="error"> 
-          //     Error occured while creating post
-          //   </Alert>
-          // </Snackbar>    
+
+            //   <Snackbar
+            //   open={true}
+            //   autoHideDuration={6000}
+            // >
+            //   <Alert severity="error"> 
+            //     Error occured while creating post
+            //   </Alert>
+            // </Snackbar>    
           }
         });
     } catch (err) {
@@ -695,7 +731,7 @@ export default function Dashboard() {
     <Backdrop
       sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
       open={creatingPost}
-      // onClick={() => setCreatingPost(false)}
+    // onClick={() => setCreatingPost(false)}
     >
       <div
         style={{
@@ -738,104 +774,104 @@ export default function Dashboard() {
               <MenuItem value={"assignment"}>Assignment</MenuItem>
               <MenuItem value={"exam"}>Exam</MenuItem>
             </Select>
-                      {/* custom fourm for each type */}
-          {postType === "announcement" && (
-            <div style={{ marginTop: "20px" }}>
-              <TextField
-                id="outlined-multiline-static"
-                label="Title"
-                multiline
-                fullWidth
-                rows={1}
-                value={postTitle}
-                onChange={(e) => setPostTitle(e.target.value)}
-              />
-              <TextField
-                id="outlined-multiline-static"
-                label="Description"
-                multiline
-                fullWidth
-                rows={4}
-                value={postDescription}
-                onChange={(e) => setPostDescription(e.target.value)}
-              />
-            </div>
-          )}
-          {postType === "assignment" && (
-            <div>
-              <TextField
-                id="outlined-multiline-static"
-                label="Title"
-                multiline
-                fullWidth
-                rows={1}
-                value={postTitle}
-                onChange={(e) => setPostTitle(e.target.value)}
-              />
-              <TextField
-                id="outlined-multiline-static"
-                label="Description"
-                multiline
-                fullWidth
-                rows={4}
-                value={postDescription}
-                onChange={(e) => setPostDescription(e.target.value)}
-              />
-              {/* date selector */}
-              <DatePicker label="Due Date" value={postDueDate} onChange={(newValue) => setPostDueDate(newValue)} />
-              {/* points */}
-              <TextField
-                id="outlined-multiline-static"
-                label="Points"
-                multiline
-                rows={1}
-                value={postMaxScore}
-                onChange={(e) => setPostMaxScore(e.target.value)}
-              />
-            </div>
-          )}
-          {postType === "exam" && (
-            <div>
-              <TextField
-                id="outlined-multiline-static"
-                label="Title"
-                multiline
-                fullWidth
-                rows={1}
-                value={postTitle}
-                onChange={(e) => setPostTitle(e.target.value)}
-              />
-              <TextField
-                id="outlined-multiline-static"
-                label="Description"
-                multiline
-                fullWidth
-                rows={4}
-                value={postDescription}
-                onChange={(e) => setPostDescription(e.target.value)}
-              />
-              {/* date selector */}
-              <DatePicker label="Exam Date" value={postDueDate} onChange={(newValue) => setPostDueDate(newValue)} />
-              {/* points */}
-              <TextField
-                id="outlined-multiline-static"
-                label="Points"
-                multiline
-                rows={1}
-                value={postMaxScore}
-                onChange={(e) => setPostMaxScore(e.target.value)}
-              />
-            </div>
-          )}
-          {/* submit button */}
-          <Button
-            variant="contained"
-            fullWidth
-            style={{ marginTop: "20px" }}
-            onClick={() => handleCreatePost()}
-          >
-            Create Post
-          </Button>
+            {/* custom fourm for each type */}
+            {postType === "announcement" && (
+              <div style={{ marginTop: "20px" }}>
+                <TextField
+                  id="outlined-multiline-static"
+                  label="Title"
+                  multiline
+                  fullWidth
+                  rows={1}
+                  value={postTitle}
+                  onChange={(e) => setPostTitle(e.target.value)}
+                />
+                <TextField
+                  id="outlined-multiline-static"
+                  label="Description"
+                  multiline
+                  fullWidth
+                  rows={4}
+                  value={postDescription}
+                  onChange={(e) => setPostDescription(e.target.value)}
+                />
+              </div>
+            )}
+            {postType === "assignment" && (
+              <div>
+                <TextField
+                  id="outlined-multiline-static"
+                  label="Title"
+                  multiline
+                  fullWidth
+                  rows={1}
+                  value={postTitle}
+                  onChange={(e) => setPostTitle(e.target.value)}
+                />
+                <TextField
+                  id="outlined-multiline-static"
+                  label="Description"
+                  multiline
+                  fullWidth
+                  rows={4}
+                  value={postDescription}
+                  onChange={(e) => setPostDescription(e.target.value)}
+                />
+                {/* date selector */}
+                <DatePicker label="Due Date" value={postDueDate} onChange={(newValue) => setPostDueDate(newValue)} />
+                {/* points */}
+                <TextField
+                  id="outlined-multiline-static"
+                  label="Points"
+                  multiline
+                  rows={1}
+                  value={postMaxScore}
+                  onChange={(e) => setPostMaxScore(e.target.value)}
+                />
+              </div>
+            )}
+            {postType === "exam" && (
+              <div>
+                <TextField
+                  id="outlined-multiline-static"
+                  label="Title"
+                  multiline
+                  fullWidth
+                  rows={1}
+                  value={postTitle}
+                  onChange={(e) => setPostTitle(e.target.value)}
+                />
+                <TextField
+                  id="outlined-multiline-static"
+                  label="Description"
+                  multiline
+                  fullWidth
+                  rows={4}
+                  value={postDescription}
+                  onChange={(e) => setPostDescription(e.target.value)}
+                />
+                {/* date selector */}
+                <DatePicker label="Exam Date" value={postDueDate} onChange={(newValue) => setPostDueDate(newValue)} />
+                {/* points */}
+                <TextField
+                  id="outlined-multiline-static"
+                  label="Points"
+                  multiline
+                  rows={1}
+                  value={postMaxScore}
+                  onChange={(e) => setPostMaxScore(e.target.value)}
+                />
+              </div>
+            )}
+            {/* submit button */}
+            <Button
+              variant="contained"
+              fullWidth
+              style={{ marginTop: "20px" }}
+              onClick={() => handleCreatePost()}
+            >
+              Create Post
+            </Button>
           </FormControl>
 
 
@@ -847,13 +883,52 @@ export default function Dashboard() {
     switch (value) {
       case 1:
         return homePage;
-        case 2:
-          return postsPage;
+      case 2:
+        return postsPage;
       case 3:
         return studentsPage;
 
     }
   };
+
+  const inviteQR = (
+    <Backdrop
+      sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      open={inviteQRopen}
+      onClick={() => setInviteQROpen(false)}
+    >
+      <div
+        style={{
+          backgroundColor: "#1A2027",
+          borderRadius: "10px",
+          width: "auto",
+          maxWidth: "700px",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            padding: "20px",
+          }}
+        >
+          <h2 style={{ color: "white" }}>Invite Code</h2>
+          <IconButton
+            aria-label="close"
+            color="inherit"
+            size="large"
+            onClick={() => setInviteQROpen(false)}
+          >
+            <Icon style={{ color: "white" }}>close</Icon>
+          </IconButton>
+        </div>
+        <Divider />
+        <div style={{ padding: "20px" }}>
+          <Canvas text={"https://syncedteach.phatlor.me/invite/" + data?.joinCode ?? "Loading..."} />
+        </div>
+      </div>
+    </Backdrop>
+  );
 
   return (
     <>
@@ -865,18 +940,18 @@ export default function Dashboard() {
           href="https://fonts.googleapis.com/icon?family=Material+Icons"
         />
       </Head>
-      <Snackbar 
+      <Snackbar
         open={alertOpen}
         autoHideDuration={5000}
         onClose={() => setAlertOpen(false)}
-        style={{bottom: "70px"}}
+        style={{ bottom: "70px" }}
       >
         <Alert onClose={() => setAlertOpen(false)} severity={alertType}>
           {alertMessage}
         </Alert>
       </Snackbar>
 
-
+      {inviteQR}
       {createPostPage}
       {currentPage()}
       <BottomNavigation
