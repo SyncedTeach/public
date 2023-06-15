@@ -16,6 +16,8 @@ const LoginPage = () => {
   const [username, setUsername] = useState<string | null>(null);
   const [password, setPassword] = useState<string | null>(null);
 
+  let { redirect } = router.query;
+
   const authenticate = async (credentials: {
     [key: string]: string | null;
   }) => {
@@ -56,7 +58,7 @@ const LoginPage = () => {
           setStatus("Success! Redirecting...");
           localStorage.setItem("user_id", data.uid);
           setTimeout(() => {
-            router.push("/dashboard");
+            router.push(redirect ? redirect.toString() : "/dashboard");
           }, 1000);
         } else {
           setError(data.message);

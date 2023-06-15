@@ -22,16 +22,16 @@ import {
   MenuItem,
   TextField,
   Snackbar,
-  AlertColor
+  AlertColor,
 } from "@mui/material";
 import Icon from "@mui/material/Icon";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import settings from "@/utils/settings";
 import { DatePicker } from "@mui/x-date-pickers";
-import dayjs, { Dayjs } from 'dayjs';
-import ReactMarkdown from 'react-markdown';
-import { useQRCode } from 'next-qrcode';
+import dayjs, { Dayjs } from "dayjs";
+import ReactMarkdown from "react-markdown";
+import { useQRCode } from "next-qrcode";
 
 interface Group {
   name: string;
@@ -107,10 +107,13 @@ export default function Dashboard() {
   const refreshData = async () => {
     if (id) {
       try {
-        const groupResponse = await fetch(settings.config.api_route + "/v1/groups/" + id, {
-          method: "GET",
-          credentials: "include",
-        });
+        const groupResponse = await fetch(
+          settings.config.api_route + "/v1/groups/" + id,
+          {
+            method: "GET",
+            credentials: "include",
+          }
+        );
 
         if (groupResponse.status !== 200) {
           return router.push("/dashboard");
@@ -126,10 +129,13 @@ export default function Dashboard() {
         console.log(group);
         setData(group);
 
-        const postsResponse = await fetch(settings.config.api_route + "/v1/posts/group/" + id, {
-          method: "GET",
-          credentials: "include",
-        });
+        const postsResponse = await fetch(
+          settings.config.api_route + "/v1/posts/group/" + id,
+          {
+            method: "GET",
+            credentials: "include",
+          }
+        );
 
         const postsData = await postsResponse.json();
 
@@ -155,7 +161,7 @@ export default function Dashboard() {
     refreshData();
     console.log(data?.posts);
     // Fetch data only if `id` is defined
-    // refreshData(); after 2 seconds  
+    // refreshData(); after 2 seconds
   }, [router.isReady, id, router.reload, 2]);
   // const students = [
   //   {
@@ -183,7 +189,7 @@ export default function Dashboard() {
       <div className={styles.strcontainer}>
         <h2>Class - {data?.name}</h2>
         <br></br>
-        <Grid container spacing={2} justifyContent="center">
+        <Grid container spacing={3}>
           <Grid item xs={12} sm={6}>
             <Paper
               sx={{
@@ -199,9 +205,10 @@ export default function Dashboard() {
               <p style={{ color: "#42ba96" }}>assigned</p>
               {/* filter all posts with assignments type and get size abd check if posts exists */}
               <p style={{ fontSize: "20px" }}>
-                {data?.posts != undefined ?
-                  data?.posts.filter((post) => post.type === "assignment")
-                    .length : "No assignments"}
+                {data?.posts != undefined
+                  ? data?.posts.filter((post) => post.type === "assignment")
+                      .length
+                  : "No assignments"}
               </p>
               <br />
               <p style={{ color: "#FFD700" }}>overdue</p>
@@ -221,17 +228,21 @@ export default function Dashboard() {
               <br />
               <p style={{ color: "#FFD700" }}>subject</p>
               <p style={{ fontSize: "20px" }}>
-                {(data?.posts != undefined && data?.posts.filter((post) => post.type === "exam").length > 0) ?
-                  data?.posts.filter((post) => post.type === "exam")[0].data
-                    .title : "No exams"}
+                {data?.posts != undefined &&
+                data?.posts.filter((post) => post.type === "exam").length > 0
+                  ? data?.posts.filter((post) => post.type === "exam")[0].data
+                      .title
+                  : "No exams"}
               </p>
               <br />
               <p style={{ color: "#42ba96" }}>date</p>
               {/* filter latest exam */}
               <p style={{ fontSize: "20px" }}>
-                {(data?.posts != undefined && data?.posts.filter((post) => post.type === "exam").length > 0) ?
-                  data?.posts.filter((post) => post.type === "exam")[0].data
-                    .dueDate : "..."}
+                {data?.posts != undefined &&
+                data?.posts.filter((post) => post.type === "exam").length > 0
+                  ? data?.posts.filter((post) => post.type === "exam")[0].data
+                      .dueDate
+                  : "..."}
               </p>
             </Paper>
           </Grid>
@@ -252,11 +263,15 @@ export default function Dashboard() {
               <p style={{ fontSize: "20px" }}>{data?.joinCode}</p>
               <br />
               <p style={{ color: "#FFD700" }}>QR Code</p>
-              <Button variant="contained" color="primary" onClick={() => setInviteQROpen(true)}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => setInviteQROpen(true)}
+              >
                 Generate QR Code
               </Button>
-              </Paper>
-              </Grid>
+            </Paper>
+          </Grid>
         </Grid>
       </div>
     </div>
@@ -368,7 +383,9 @@ export default function Dashboard() {
                             />
                           </div>
                           <div>
-                            <h3 style={{ color: "white" }}>{item.data.title}</h3>
+                            <h3 style={{ color: "white" }}>
+                              {item.data.title}
+                            </h3>
                             {/* {md.render(item.data.description)} */}
                             <div style={{ textAlign: "left" }}>
                               {/* markdown using react-markdown */}
@@ -376,8 +393,6 @@ export default function Dashboard() {
                                 {item.data.description}
                               </ReactMarkdown>
                             </div>
-
-
                           </div>
                           {/* </div> */}
                           {/* <p>Due Date - {item.dueDate.getTime()}</p> */}
@@ -618,16 +633,17 @@ export default function Dashboard() {
             //   open={true}
             //   autoHideDuration={6000}
             // >
-            //   <Alert severity="error"> 
+            //   <Alert severity="error">
             //     Error occured while creating post ({res.status})
             //   </Alert>
             // </Snackbar>
-            setAlertMessage("Error occured while creating post (" + res.status + ")");
+            setAlertMessage(
+              "Error occured while creating post (" + res.status + ")"
+            );
             setAlertType("error");
             setAlertOpen(true);
-
           }
-          return res.json()
+          return res.json();
         })
         .then((data) => {
           if (data.success) {
@@ -635,7 +651,7 @@ export default function Dashboard() {
             //   open={true}
             //   autoHideDuration={6000}
             // >
-            //   <Alert severity="success"> 
+            //   <Alert severity="success">
             //     Post created successfully
             //   </Alert>
             // </Snackbar>
@@ -659,10 +675,10 @@ export default function Dashboard() {
             //   open={true}
             //   autoHideDuration={6000}
             // >
-            //   <Alert severity="error"> 
+            //   <Alert severity="error">
             //     Error occured while creating post
             //   </Alert>
-            // </Snackbar>    
+            // </Snackbar>
           }
         });
     } catch (err) {
@@ -671,7 +687,7 @@ export default function Dashboard() {
       //   open={true}
       //   autoHideDuration={6000}
       // >
-      //   <Alert severity="error"> 
+      //   <Alert severity="error">
       //     Error occured while creating post
       //   </Alert>
       // </Snackbar>
@@ -680,7 +696,6 @@ export default function Dashboard() {
       setAlertOpen(true);
     }
   };
-
 
   const handleCreatePost = async () => {
     if (postType === "announcement") {
@@ -731,7 +746,7 @@ export default function Dashboard() {
     <Backdrop
       sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
       open={creatingPost}
-    // onClick={() => setCreatingPost(false)}
+      // onClick={() => setCreatingPost(false)}
     >
       <div
         style={{
@@ -818,7 +833,11 @@ export default function Dashboard() {
                   onChange={(e) => setPostDescription(e.target.value)}
                 />
                 {/* date selector */}
-                <DatePicker label="Due Date" value={postDueDate} onChange={(newValue) => setPostDueDate(newValue)} />
+                <DatePicker
+                  label="Due Date"
+                  value={postDueDate}
+                  onChange={(newValue) => setPostDueDate(newValue)}
+                />
                 {/* points */}
                 <TextField
                   id="outlined-multiline-static"
@@ -851,7 +870,11 @@ export default function Dashboard() {
                   onChange={(e) => setPostDescription(e.target.value)}
                 />
                 {/* date selector */}
-                <DatePicker label="Exam Date" value={postDueDate} onChange={(newValue) => setPostDueDate(newValue)} />
+                <DatePicker
+                  label="Exam Date"
+                  value={postDueDate}
+                  onChange={(newValue) => setPostDueDate(newValue)}
+                />
                 {/* points */}
                 <TextField
                   id="outlined-multiline-static"
@@ -873,8 +896,6 @@ export default function Dashboard() {
               Create Post
             </Button>
           </FormControl>
-
-
         </div>
       </div>
     </Backdrop>
@@ -887,7 +908,6 @@ export default function Dashboard() {
         return postsPage;
       case 3:
         return studentsPage;
-
     }
   };
 
@@ -923,8 +943,22 @@ export default function Dashboard() {
           </IconButton>
         </div>
         <Divider />
-        <div style={{ padding: "20px" }}>
-          <Canvas text={"https://syncedteach.phatlor.me/invite/" + data?.joinCode ?? "Loading..."} />
+        <div
+          style={{
+            padding: "20px",
+            justifyContent: "center",
+            alignItems: "center",
+            display: "flex",
+            flexDirection: "column",
+            textAlign: "center",
+          }}
+        >
+          <Canvas
+            text={
+              "https://syncedteach.phatlor.me/invite/" + data?.joinCode ??
+              "Loading..."
+            }
+          />
         </div>
       </div>
     </Backdrop>
