@@ -24,6 +24,7 @@ export default async function handler(
             res.status(200).json({ success: true, message: 'Config file already exists', path: configPath });
         }else{
             // create file
+            fs.mkdirSync(path.join(process.cwd(), 'config'), { recursive: true });
             fs.writeFile(configPath, JSON.stringify(config), (err) => {
                 if(err) {
                     res.status(500).json({ success: false, message: 'an error occured while creating config file ' + err });
