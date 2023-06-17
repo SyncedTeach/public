@@ -12,7 +12,8 @@ import {
   Backdrop,
   Input,
   Card,
-  LinearProgress
+  LinearProgress,
+  Chip
 } from "@mui/material";
 import Icon from "@mui/material/Icon";
 import { useRouter } from "next/router";
@@ -89,15 +90,20 @@ export default function Dashboard() {
                 height={200}
                 alt="student-img"
               />
-              <p style={{ color: "#42ba96", fontSize: "20px" }}>
+              <p style={{ color: "", fontSize: "20px" }}>
                 Your student is in
               </p>
-              <p>Class student-homeroom-class</p>
-              <br />
-              <p style={{ color: "#FFD700", fontSize: "20px" }}>
-                You&apos;re teaching
+              <p>M58</p>
+              <p style={{ color: "", fontSize: "20px" }}>
+                Attendence status
               </p>
-              <p>class-classroom-size Classrooms</p>
+              <Chip label="Present" color="success" />
+              <br />
+              <p style={{ color: "#42ba96", fontSize: "20px" }}>
+                Check-in time: 7:39 AM (6/17/2023)
+              </p>
+
+
             </Paper>
           </Grid>
         </Grid>
@@ -124,7 +130,7 @@ export default function Dashboard() {
           }}
         >
           <h4>Daily attendence</h4>
-          <p>Date: student-checkin-date</p>
+          <p>(6/17/2023)</p>
 
           <Card
             sx={{
@@ -138,9 +144,8 @@ export default function Dashboard() {
           >
             <h4>Check-in </h4>
             <p style={{color: "#ff0000", borderRadius: "10px"}}>Absent</p>
-            <p>Location: student-checkin-location</p>
-            <br />
-            <p>student-checkin-time</p>
+            <p>Location:  BCC Sirinat Building</p>
+            <p>7:39 AM</p>
           </Card>
 
           <Paper
@@ -155,9 +160,8 @@ export default function Dashboard() {
           >
             <h4>Check-out</h4>
             <p style={{color: "#FFD700", borderRadius: "10px"}}>Late</p>
-            <p>Location: student-checkout-location</p>
-            <br />
-            <p>student-checkout-time</p>
+            <p>Location: BCC 180 Year Building</p>
+            <p>4:12 PM</p>
           </Paper>
         </Paper>
         <br/>
@@ -166,6 +170,8 @@ export default function Dashboard() {
           sx={{
             p: 2,
             maxWidth: 600,
+            minWidth: 300,
+            height: "auto",
             // maxHeight: 200,
             marginLeft: "35px",
             marginRight: "20px",
@@ -180,15 +186,16 @@ export default function Dashboard() {
               margin: "20px",
               maxWidth: "auto",
               maxHeight: 3000,
+              minHeight: "auto",
               flexGrow: 1,
               backgroundColor: "#1A24527",
               
             }}
           >
-            <p>Present: student-attendence-present.list()</p>
-            <p>Late: student-attendence-late.list()</p>
-            <p>Absent: student-attendence-absent.list()</p>
-            <p>Leave: student-attendence-leave.list()</p>
+            <p>Present: 7</p>
+            <p>Late: 1</p>
+            <p>Absent: 0</p>
+            <p>Leave: 0</p>
           </Paper>
         </Paper>
         </Grid>
