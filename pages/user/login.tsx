@@ -69,9 +69,7 @@ const LoginPage = () => {
         setError("An error occurred");
       });
   };
-  useEffect(() => {
-
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <>
@@ -81,14 +79,23 @@ const LoginPage = () => {
       <div className={styles["login-page"]}>
         <form onSubmit={handleLogin} method="POST">
           <div className={styles.logincontainer}>
-            <Image
-              src="/favicon.ico"
-              alt="SyncedTeach logo"
-              width={64}
-              height={64}
-              priority
-              style={{ margin: "10px", borderRadius: "10px" }}
-            />
+            <div>
+              <img
+                src="http://jnrgo.bcc.ac.th/images/bcc_logo.jpg"
+                alt="BCC Logo"
+                width="64"
+                height="64"
+              />
+              <Image
+                src="/favicon.ico"
+                alt="SyncedTeach logo"
+                width={64}
+                height={64}
+                priority
+                style={{ margin: "10px", borderRadius: "10px" }}
+              />
+            </div>
+
             <label style={{ fontSize: "20px" }}>Login</label>
             {error !== "" ? (
               <Alert severity="error" style={{ margin: "10px" }}>

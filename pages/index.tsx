@@ -5,8 +5,10 @@ import Button from "@mui/material/Button";
 import styles from "@/styles/landing.module.css";
 import LandingUserOptions from "@/components/LandingUserOptions";
 import "@/styles/globals.css";
+import { useRouter } from "next/router";
 
 export default function Home() {
+  const router = useRouter();
   const userOptions = [
     {
       name: "Teacher",
@@ -28,6 +30,13 @@ export default function Home() {
     },
   ];
 
+  // wait 3000ms before redirecting to dashboard
+  React.useEffect(() => {
+    setTimeout(() => {
+      router.push("/dashboard");
+    }, 3000);
+  }, []);
+
   return (
     <>
       <Head>
@@ -36,25 +45,55 @@ export default function Home() {
       </Head>
 
       <div className={styles.section1}>
-        <div className={styles.strcontainer}>
-          <h1>SyncedTeach</h1>
-          <p>An all-in-one school portal teachers, students, and parents.</p>
-          <br></br>
-          <p>Get started</p>
-          <div className={styles.btncontainer}></div>
-        <LandingUserOptions userOptions={userOptions} />
-        <br></br>
-        <footer>
-                  <div style={{"padding":"4px"}}className="text--size-medium">
-          Made by <a href="https://mistertfy64.com"><Image src="/static/images/mistertfy64.png" alt="mistertfy64" width="121" height="20"></Image></a> and <a className="text--link" href="https://phatlor.me">EpicCatto</a>
-        </div>
-        <div className="text--size-small">
-          <a className="text--link" href="https://github.com/SyncedTeach/public">Frontend Repository</a> • <a className="text--link" href="https://github.com/SyncedTeach/api">API Repository</a> • <a className="text--link" href="https://github.com/SyncedTeach/core">Installation Instructions</a>
-          <br></br>
-          Made as a project for a software competition, but free for anyone to use commercially.
-        </div>
-        </footer>
+        <div
+          className={styles.strcontainer}
+          style={{
+            color: "white",
+            borderRadius: "10px",
+            padding: "10px",
+            textAlign: "center",
+            margin: "10px",
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: "#fff",
+              borderRadius: "10px",
+              width: "100%",
+            }}
+          >
+            <Image
+              src="/favicon.ico"
+              alt="SyncedTeach logo"
+              width={64}
+              height={64}
+              priority
+              style={{ margin: "10px", borderRadius: "10px" }}
+            />
+            <img src="http://bcc.ac.th/2019/img/logo/logo_bcc.png" alt="icon" />
+          </div>
+          <br />
+          {/* <h1>BCC - ST Preview</h1>
+          <p>Getting things ready hang tight!</p> */}
 
+          {/* hyperlink */}
+          {/* <u
+            onClick={() => router.push("/dashboard")}
+            style={{ cursor: "pointer" }}
+          >
+            Not getting redirected? Click here
+          </u> */}
+          <div>
+            <footer>
+              <u style={{ cursor: "pointer" }}>
+                This website does not actually exist, This is a preview of what
+                the website will look like.
+              </u>
+              <p style={{ fontSize: "15px" }}>
+                This website doesnt associate with BCC in any way.
+              </p>
+            </footer>
+          </div>
         </div>
       </div>
     </>
