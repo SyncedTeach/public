@@ -185,7 +185,7 @@ export default function Dashboard() {
   // ];
 
   const homePage = (
-    <div className={styles.section1}>
+    <div className={styles.section}>
       <div className={styles.strcontainer}>
         <h2>Class - {data?.name}</h2>
         <br></br>
@@ -278,7 +278,7 @@ export default function Dashboard() {
   );
 
   const studentsPage = (
-    <div className={styles.section1}>
+    <div className={styles.section}>
       <div className={styles.strcontainer}>
         {/* listing classes */}
         <h2>Students</h2>
@@ -324,7 +324,7 @@ export default function Dashboard() {
   );
 
   const postsPage = (
-    <div className={styles.section1}>
+    <div className={styles.section}>
       <div className={styles.strcontainer}>
         {/* listing classes */}
         <h2>Posts</h2>

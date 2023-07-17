@@ -107,7 +107,7 @@ export default function Join() {
 
   return (
     <>
-      <div className={styles.section1}>
+      <div className={styles.section}>
         <div className={styles.strcontainer}>
           <Paper elevation={3} style={{ padding: "1rem" }}>
             <Image
