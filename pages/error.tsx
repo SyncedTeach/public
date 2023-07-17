@@ -40,7 +40,7 @@ export default function ErrorPage() {
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
 
-        <div className={styles.section1}>
+        <div className={styles.section}>
             <div className={styles.strcontainer}>
                 <h1>SyncedTeach</h1>
                 <Alert severity="error">An error has occurred.</Alert>

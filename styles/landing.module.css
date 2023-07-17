@@ -1,4 +1,5 @@
-.section1 {
+
+.section {
 	width: 100%;
 	/* make it fits all the eliment inside */
 	height: 100% ;
@@ -12,8 +13,8 @@
 
 	background-image: linear-gradient(
 		180deg,
-		rgba(68, 0, 62, 0.9),
-		rgba(0, 22, 45, 0.9)
+		rgba(173, 247, 242, 0.9),
+		rgba(92, 170, 255, 0.9)
 	);
 	background-repeat: no-repeat;
 	background-attachment: fixed;
@@ -23,7 +24,15 @@
 	padding-top: 100px;
 }
 
+.scroller {
+    height: 100vh;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+}
 
+.scroller section {
+    scroll-snap-align: start;
+}
 
 @keyframes fadein {
 	from {
@@ -34,7 +43,7 @@
 	}
 }
 
-.section1 .strcontainer {
+.section .strcontainer {
 	width: 100%;
 	height: 100%;
 	display: flex;
@@ -44,33 +53,56 @@
 	flex-direction: column;
 }
 
-.section1 .strcontainer h1 {
+.section .strcontainer h1 {
 	font-size: 4rem;
 	font-weight: 700;
 	color: #fff;
 	margin-bottom: 1rem;
 }
 
-.section1 .strcontainer p {
+.section .strcontainer p {
 	font-size: 1.5rem;
 	font-weight: 400;
 	color: #fff;
 	margin-bottom: 1rem;
 }
 
-.section1 .strcontainer .btncontainer {
+.section .strcontainer .btncontainer {
+	margin: 16px;
+}
+
+.features {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: row;
+}
+
+.features .feature {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
 	margin: 16px;
 }
 
 /* mobile support */
 @media screen and (max-width: 768px) {
-	.section1 .strcontainer h1 {
+	.section .strcontainer h1 {
 		font-size: 2.5rem;
 		margin-bottom: 0.5rem;
 	}
 
-	.section1 .strcontainer p {
+	.section .strcontainer p {
 		font-size: 1rem;
 		margin-bottom: 0.5rem;
+	}
+
+	.features .feature {
+		flex-direction: column;
+	}
+
+	.features {
+		flex-direction: column;
 	}
 }

@@ -98,7 +98,7 @@ export default function Dashboard() {
   }, [router.isReady, router.query.page]);
 
   const homePage = (
-    <div className={styles.section1}>
+    <div className={styles.section}>
       <div className={styles.strcontainer}>
         <h2>Welcome {data.username}, this is your teacher panel</h2>
         <br></br>
@@ -182,7 +182,7 @@ export default function Dashboard() {
 
     }}
     >
-      {/* <div className={styles.section1} style={{
+      {/* <div className={styles.section} style={{
         backgroundColor: "#1A2027",
         backgroundImage: "",
       }}> */}
@@ -244,7 +244,7 @@ export default function Dashboard() {
   );
   
   const classesPage = (
-    <div className={styles.section1}>
+    <div className={styles.section}>
       <div className={styles.strcontainer}>
         <h2>Classes</h2>
         <Card
@@ -335,7 +335,7 @@ export default function Dashboard() {
   const loading = (
     <>
       <LinearProgress />
-      <div className={styles.section1}>
+      <div className={styles.section}>
         <div className={styles.strcontainer}>
           <h1>SyncedTeach</h1>
           <p>Loading...</p>

@@ -254,7 +254,7 @@ export default function Dashboard() {
       });
   };
   const homePage = (
-    <div className={styles.section1}>
+    <div className={styles.section}>
       <div className={styles.strcontainer}>
         <h2>
           Hey {data?.username}, Don&apos;t forget to check all your work!{" "}
@@ -353,7 +353,7 @@ export default function Dashboard() {
   );
 
   const subjectPage = (
-    <div className={styles.section1}>
+    <div className={styles.section}>
       <div className={styles.strcontainer}>
         {/* listing classes */}
         <h2>Subject</h2>
@@ -512,7 +512,7 @@ export default function Dashboard() {
   );
 
   const postsPage = (
-    <div className={styles.section1}>
+    <div className={styles.section}>
       <div className={styles.strcontainer}>
         {/* listing classes */}
         <h2
@@ -932,7 +932,7 @@ export default function Dashboard() {
   );
 
   const todoPage = (
-    <div className={styles.section1}>
+    <div className={styles.section}>
       <div className={styles.strcontainer}>
         <h2>Todo</h2>
         <p>Todo</p>
@@ -956,7 +956,7 @@ export default function Dashboard() {
   const loading = (
     <>
       <LinearProgress />
-      <div className={styles.section1}>
+      <div className={styles.section}>
         <div className={styles.strcontainer}>
           <h1>SyncedTeach</h1>
           <p>Loading...</p>

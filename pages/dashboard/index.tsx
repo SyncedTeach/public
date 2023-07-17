@@ -52,7 +52,7 @@ export default function Dashboard() {
   const loading = (
     <>
       <LinearProgress />
-      <div className={styles.section1}>
+      <div className={styles.section}>
         <div className={styles.strcontainer}>
           <h1>SyncedTeach</h1>
           <p>Loading...</p>
@@ -75,7 +75,7 @@ export default function Dashboard() {
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       {isMessageLoading ? loading : (
-      <div className={styles.section1}>
+      <div className={styles.section}>
       <div className={styles.strcontainer}>
         <h1>SyncedTeach</h1>
         <p>{message}</p>
