@@ -190,7 +190,7 @@ export default function Home() {
               Students, and Parents for various school items such as assigning
               homework, assignment, or even an announcement to improve the
               productivity of both Teachers and Students and also enables
-              Parents to track their children when they're in school. (and also
+              Parents to track their children when they&apos;re in school. (and also
               for software project contest which we won a gold prize and 3rd
               runner-up award yes yes)
             </p>
@@ -241,7 +241,7 @@ export default function Home() {
                 <h2>Open-source</h2>
                 <p>
                   the source code can be freely modified to suit each
-                  school/person's needs.
+                  school/person&apos;s needs.
                 </p>
               </div>
               <div className={styles.feature}>
@@ -277,7 +277,7 @@ export default function Home() {
                 <h2>Teacher</h2>
                 <p>
                   Teachers can assign homework, assignments, and announcements
-                  to students. Teachers can also track students' progress and
+                  to students. Teachers can also track students&apos; progress and
                   attendance.
                 </p>
               </div>
@@ -295,8 +295,8 @@ export default function Home() {
                 <Icon style={{ fontSize: "20px" }}>family_restroom</Icon>
                 <h2>Parent</h2>
                 <p>
-                  Parents can view their children's homework, assignments, and
-                  announcements. Parents can also view their children's progress
+                  Parents can view their children&apos;s homework, assignments, and
+                  announcements. Parents can also view their children&apos;s progress
                   and attendance.
                 </p>
               </div>
