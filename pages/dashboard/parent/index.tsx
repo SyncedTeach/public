@@ -68,7 +68,7 @@ export default function Dashboard() {
   }, []);
 
   const homePage = (
-    <div className={styles.section1}>
+    <div className={styles.section}>
       <div className={styles.strcontainer}>
         <h2>Welcome {data.username}, this is your parent panel</h2>
         <br></br>
@@ -204,7 +204,7 @@ export default function Dashboard() {
   );
 
   const paymentsPage = (
-    <div className={styles.section1}>
+    <div className={styles.section}>
       <div className={styles.strcontainer}>
         <h2>Payments</h2>
         <Card
