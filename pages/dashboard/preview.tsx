@@ -76,7 +76,7 @@ export default function Dashboard() {
                 setMessage("An error occurred");
             });
         }else{
-            setMessage("None selected");
+            setMessage("Waiting...");
         }
       } catch (error) {
         console.error("Error:", error);
