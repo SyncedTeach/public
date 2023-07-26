@@ -59,7 +59,7 @@ export default function Home() {
         />
       </Head>
       <article className={styles.scroller}>
-        <section className={styles.section}>
+        <section className={styles.sectionblack}>
           <div
             className={styles.strcontainer}
             style={{
@@ -82,6 +82,12 @@ export default function Home() {
 
             <br />
             <br />
+
+            {/* scroll to the try me section */}
+            {/* Object is possibly 'null'.ts(2531) */}
+            <Button variant="contained" color="primary" onClick={() => {document.getElementById("tryme")?.scrollIntoView({behavior: "smooth" })}}>
+              Try me!
+            </Button> 
 
             {/* bottom scrool down */}
             <div style={{ position: "absolute", bottom: "0", width: "100%" }}>
@@ -167,7 +173,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className={styles.section}>
+        <section className={styles.sectionblack}>
           <div
             className={styles.strcontainer}
             style={{
@@ -210,7 +216,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className={styles.section}>
+        <section className={styles.sectionblack}>
           <div
             className={styles.strcontainer}
             style={{
@@ -255,7 +261,7 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <section className={styles.section}>
+        <section className={styles.sectionblack}>
           <div
             className={styles.strcontainer}
             style={{
@@ -303,7 +309,7 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <section className={styles.section}>
+        <section className={styles.sectionblack} id="tryme">
           <div
             className={styles.strcontainer}
             style={{

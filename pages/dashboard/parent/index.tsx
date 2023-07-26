@@ -112,7 +112,7 @@ export default function Dashboard() {
   );
 
   const attendencePage = (
-    <div className={styles.section1}>
+    <div className={styles.section}>
       <div className={styles.strcontainer}>
         {/* listing classes */}
         <h2>Attendence</h2>
@@ -244,7 +244,7 @@ export default function Dashboard() {
   const loading = (
     <>
       <LinearProgress />
-      <div className={styles.section1}>
+      <div className={styles.section}>
         <div className={styles.strcontainer}>
           <h1>SyncedTeach</h1>
           <p>Loading...</p>
