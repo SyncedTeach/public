@@ -80,8 +80,6 @@ export default function Home() {
               teachers.
             </p>
 
-            <br />
-            <br />
 
             {/* scroll to the try me section */}
             {/* Object is possibly 'null'.ts(2531) */}
@@ -90,7 +88,7 @@ export default function Home() {
             </Button> 
 
             {/* bottom scrool down */}
-            <div style={{ position: "absolute", bottom: "0", width: "100%" }}>
+            <div style={{ position: "absolute", bottom: "10px", width: "100%" }}>
               <p style={{ color: "white" }}>Scroll down for more</p>
               <Icon style={{ color: "white" }}>arrow_downward</Icon>
             </div>
